@@ -265,8 +265,8 @@ let g:NERDCreateDefaultMappings = 0
 " コメントアウト時のスペース数
 let NERDSpaceDelims = 1
 
-nmap <LEADER>c <plug>NERDCommenterToggle
-vmap <LEADER>c <plug>NERDCommenterToggle
+nmap <LEADER>c <Plug>NERDCommenterToggle
+vmap <LEADER>c <Plug>NERDCommenterToggle
 
 " neocomplcache ----------------------------------------------------------------
 " 自動起動する
@@ -275,6 +275,11 @@ let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_underbar_completion = 1
 " シンタックスキャッシュ時の最短文字列長
 let g:neocomplcache_min_syntax_length = 3
+
+" snippet
+let g:neocomplcache_snippets_dir = '~/.vim/snippets'
+imap <C-k> <Plug>(neocomplcache_snippets_expand)
+smap <C-k> <Plug>(neocomplcache_snippets_expand)
 
 " omni補完
 inoremap <expr><C-x><C-o> &filetype == 'vim' ? "\<C-x><C-v><C-p>" : neocomplcache#manual_omni_complete()
