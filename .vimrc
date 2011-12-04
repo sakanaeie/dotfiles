@@ -15,10 +15,13 @@ if has('vim_starting')
 endif
 filetype plugin indent on
 
+NeoBundle 'git://github.com/Shougo/vimproc.git'
+NeoBundle 'git://github.com/Shougo/vimshell.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 
 NeoBundle 'git://github.com/scrooloose/nerdtree.git'
+NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 
 NeoBundle 'git://github.com/vim-scripts/buftabs.git'
 
@@ -66,7 +69,7 @@ set swapfile
 if s:is_win()
 	set directory=$HOME/vimfiles/swap
 else
-"	set directory=$HOME/.vim/swap
+	set directory=$HOME/.vim/swap
 endif
 
 " 基本機能 =====================================================================
@@ -198,8 +201,9 @@ endif
 " [,]を<LEADER>にする
 let mapleader = ','
 
-" [;]を[:]にする
+" [;]と[:]を入れ替える
 nnoremap ; :
+nnoremap : ;
 
 " 表示行単位移動
 nnoremap j gj
@@ -224,7 +228,7 @@ nnoremap <F10> :<C-u>bn<CR>
 nnoremap <ESC><ESC> :<C-u>noh<CR>
 
 " vimgrep
-nnoremap <LEADER>g :<C-u>vimgrep //j **/*.php \| cw<C-b><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT>
+"nnoremap <LEADER>g :<C-u>vimgrep //j **/*.php \| cw<C-b><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT>
 
 " Insert -----------------------------------------------------------------------
 inoremap jj <ESC>
@@ -255,6 +259,15 @@ command! MyBuftabsRedraw call s:buftabs_redraw()
 
 nnoremap <F8> :<C-u>MyBuftabsRedraw<CR>
 
+" nerd_commenter ---------------------------------------------------------------
+" デフォルトマッピングを初期化
+let g:NERDCreateDefaultMappings = 0
+" コメントアウト時のスペース数
+let NERDSpaceDelims = 1
+
+nmap <LEADER>c <plug>NERDCommenterToggle
+vmap <LEADER>c <plug>NERDCommenterToggle
+
 " neocomplcache ----------------------------------------------------------------
 " 自動起動する
 let g:neocomplcache_enable_at_startup = 1
@@ -262,6 +275,9 @@ let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_underbar_completion = 1
 " シンタックスキャッシュ時の最短文字列長
 let g:neocomplcache_min_syntax_length = 3
+
+" omni補完
+inoremap <expr><C-x><C-o> &filetype == 'vim' ? "\<C-x><C-v><C-p>" : neocomplcache#manual_omni_complete()
 
 " nerd_tree --------------------------------------------------------------------
 " カラー表示する
@@ -275,13 +291,32 @@ nnoremap <LEADER>f :<C-u>NERDTreeToggle<CR>
 " unite ------------------------------------------------------------------------
 " インサートモードで起動する
 let g:unite_enable_start_insert = 1
+" 最近使用したファイルの記憶上限
+let g:unite_source_file_mru_limit = 1000
+" grepの候補上限
+let g:unite_source_grep_max_candidates = 1000
+" yank履歴有効
+let g:unite_source_history_yank_enable = 1
+" yank履歴の記憶上限
+let g:unite_source_history_yank_limit = 1000
 
 " ファイル一覧 (vim起動ディレクトリから)
-nnoremap <LEADER>uu :<C-u>Unite -buffer-name=files file<CR>
-" ファイル一覧 (カレントディレクトリから)
-nnoremap <LEADER>uc :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+nnoremap <LEADER>uu :<C-u>Unite file_rec/async -buffer-name=file<CR>
 " 最近使用したファイル一覧
-nnoremap <LEADER>uh :<C-u>Unite file_mru<CR>
+nnoremap <LEADER>uh :<C-u>Unite file_mru -buffer-name=file<CR>
+" grep
+nnoremap <LEADER>ug :<C-u>Unite grep -no-quit<CR>
+" yank履歴
+nnoremap <LEADER>uy :<C-u>Unite history/yank<CR>
+
+" vimshell ---------------------------------------------------------------------
+" ディレクトリ補完時にスラッシュを補う
+let g:vimshell_enable_auto_slash = 1
+" 履歴数
+let g:vimshell_max_command_history = 1000
+
+nnoremap <LEADER>ss :<C-u>VimShell<CR>
+nnoremap <LEADER>sc :<C-u>VimShellCreate<CR>
 
 " 自作関数 =====================================================================
 " 構文チェック -----------------------------------------------------------------
