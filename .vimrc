@@ -254,7 +254,7 @@ nnoremap <LEADER>sc :<C-u>VimShellCreate<CR>
 
 " 自作関数 =====================================================================
 " 構文チェック -----------------------------------------------------------------
-function! s:php_lint()
+function! s:phpLint()
 	let l:result = system(&ft . ' -l ' . expand('%:p'))
 
 	if 'No syntax errors' == strpart(l:result, 0, 16)
@@ -264,12 +264,12 @@ function! s:php_lint()
 
 	echo l:result
 endfunction
-command! MyPhpLint call s:php_lint()
+command! MyPhpLint call s:phpLint()
 
-function! s:ruby_lint()
+function! s:rubyLint()
 	echo system(&ft . ' -c ' . expand('%:p'))
 endfunction
-command! MyRubyLint call s:ruby_lint()
+command! MyRubyLint call s:rubyLint()
 
 augroup MyLint
 	autocmd!
@@ -278,8 +278,8 @@ augroup MyLint
 augroup END
 
 " 分割画面保持バッファクローズ -------------------------------------------------
-function! s:close_buffer()
-	let l:curr_buf = bufnr('%')	" カレントバッファの番号
+function! s:closeBuffer()
+	let l:cur_buf = bufnr('%')	" カレントバッファの番号
 
 	if buflisted(bufnr('#'))
 		buf #	" 直前まで編集していたバッファに移動する
@@ -287,31 +287,134 @@ function! s:close_buffer()
 		bn		" 次のバッファに移動する
 	endif
 
-	if bufnr('%') == l:curr_buf
+	if bufnr('%') == l:cur_buf
 		" カレントバッファしかないとき
 		new
 	endif
 
 	" バッファを削除する
-	exe 'bd ' . l:curr_buf
-	if 0 != bufloaded(l:curr_buf)
+	exe 'bd ' . l:cur_buf
+	if 0 != bufloaded(l:cur_buf)
 		" バッファ削除に失敗したとき
-		exe 'buf ' . l:curr_buf
+		exe 'buf ' . l:cur_buf
 	endif
 endfunction
-command! MyCloseBuffer call s:close_buffer()
+command! MyCloseBuffer call s:closeBuffer()
 
 nnoremap <F7> :<C-u>MyCloseBuffer<CR>
 
 " 区切りコメント ---------------------------------------------------------------
-function! s:separate_comment(sign, count)
+function! s:separateComment(sign, count)
 	exe 'normal! $a' . repeat(a:sign, a:count - strdisplaywidth(getline('.')))
 endfunction
-command! MySeparateCommentH call s:separate_comment('-', 80)
-command! MySeparateCommentE call s:separate_comment('=', 80)
+command! MySeparateCommentH call s:separateComment('-', 80)
+command! MySeparateCommentE call s:separateComment('=', 80)
 
-nnoremap <leader>- :<C-u>MySeparateCommentH<CR>
-nnoremap <leader>= :<C-u>MySeparateCommentE<CR>
+nnoremap <LEADER>- :<C-u>MySeparateCommentH<CR>
+nnoremap <LEADER>= :<C-u>MySeparateCommentE<CR>
 
-" 変換子 -----------------------------------------------------------------------
-" p : フルパス, h : ディレクトリ, t : ファイル名, r : 拡張子なし, e : 拡張子のみ
+" 一時コメントアウト -----------------------------------------------------------
+" コメントアウト記号辞書
+let s:commentout_dict = {
+\	'css': {'prefix': '/*', 'suffix': '*/'},
+\	'html': {'prefix': '<!--', 'suffix': '-->'},
+\	'javascript': {'prefix': '//'},
+\	'php': {'prefix': '//'},
+\	'vim': {'prefix': '"'},
+\	'default': {'prefix': '#'}
+\}
+
+"
+" 一時コメントアウト切り替え
+"
+" 取り付け/取り除き処理の切り替え条件は、処理対象の最初の行の行末/行頭がコメントアウトされているかどうかである
+" ただし、厳密な意味で'行頭(0)/行末($)'を指す
+"
+" @param	int		mode	0:NormalMode / 1:VisualMode
+"
+function! s:toggleTemporaryCommentout(mode)
+	" ファイルタイプによる、記号の選定
+	if has_key(s:commentout_dict, &filetype)
+		" コメントアウト記号辞書にあるとき、それを使用する
+		let l:sign_row = s:commentout_dict[&filetype]
+	else
+		" ないとき、default を利用する
+		let l:sign_row= s:commentout_dict['default']
+	endif
+
+	" 始端/終端記号の決定
+	let l:sign_hash = {}
+	for l:side in ['prefix', 'suffix']
+		if has_key(l:sign_row, l:side)
+			" prefix / suffix が辞書にあるとき
+			if 'prefix' == l:side
+				" prefix のとき、記号の後にスペースをつける
+				let l:sign_hash[l:side] = l:sign_row[l:side] . ' '
+			else
+				" suffix のとき、記号の前にスペースをつける
+				let l:sign_hash[l:side] = ' ' . l:sign_row[l:side]
+			endif
+		else
+			" ないとき
+			let l:sign_hash[l:side] = ''
+		endif
+	endfor
+
+	" Normal / Visual モードによる、処理対象行の決定
+	if 0 == a:mode
+		" Normalモードのとき
+		let l:first_line = line('.')
+		let l:last_line  = l:first_line
+	else
+		" Visualモードのとき
+		let l:first_line = line("'<")	" 選択範囲の上端
+		let l:last_line  = line("'>")	" 選択範囲の下端
+	endif
+
+	" 処理モードの変数/定数
+	let l:action_mode = 0	" 取り付け / 取り除き / 初期状態(モード決定前) を区別するための変数
+	let l:const_add   = 1	" 取り付けを表わす定数
+	let l:const_del   = 2	" 取り除きを表わす定数
+
+	" コメントアウト記号の取り付け/取り除き処理 (ループ内における初回の処理でモードを決定する)
+	while l:first_line <= l:last_line
+		let l:cur_str = getline(l:first_line)
+
+		if '' != l:cur_str
+			" 行が空でないとき
+
+			if l:const_add != l:action_mode
+				" 取り除きor初期状態のとき
+				let l:prefix_pos =  stridx(l:cur_str, l:sign_hash['prefix'])
+				let l:suffix_pos = strridx(l:cur_str, l:sign_hash['suffix'])
+				let l:strlen_without_suffix = strlen(l:cur_str) - strlen(l:sign_hash['suffix'])
+			endif
+
+			if l:const_add != l:action_mode && (0 == l:prefix_pos && l:strlen_without_suffix == l:suffix_pos)
+				" 取り除きor初期状態 and 行頭と行末に記号があるとき
+
+				" prefix / suffix を取り除いて置き換える
+				let l:strlen_prefix = strlen(l:sign_hash['prefix'])
+				call setline(l:first_line, strpart(l:cur_str, l:strlen_prefix, l:strlen_without_suffix - l:strlen_prefix))
+
+				" 処理モードを'取り除き'で決定
+				let l:action_mode = l:const_del
+			elseif l:const_del != l:action_mode
+				" 取り付けor初期状態のとき
+
+				" prefix / suffix を取り付けて置き換える
+				call setline(l:first_line, substitute(l:cur_str, '^\(.*\)$', l:sign_hash['prefix'] . '\1' . l:sign_hash['suffix'], ''))
+
+				" 処理モードを'取り付け'で決定
+				let l:action_mode = l:const_add
+			endif
+		end
+
+		let l:first_line = l:first_line + 1
+	endwhile
+endfunction
+command! MyToggleTemporaryCommentoutForNormal call s:toggleTemporaryCommentout(0)
+command! MyToggleTemporaryCommentoutForVisual call s:toggleTemporaryCommentout(1)
+
+nnoremap <LEADER>c :<C-u>MyToggleTemporaryCommentoutForNormal<CR>
+vnoremap <LEADER>c :<C-u>MyToggleTemporaryCommentoutForVisual<CR>
