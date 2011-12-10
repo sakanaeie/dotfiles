@@ -2,11 +2,6 @@
 " vi互換にしない
 set nocompatible
 
-" win32/64のときtrueを返す
-function! s:is_win()
-	return (has('win32') || has('win64'))
-endfunction
-
 " neobundleの設定 ==============================================================
 filetype plugin indent off
 if has('vim_starting')
@@ -21,9 +16,6 @@ NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 
 NeoBundle 'git://github.com/scrooloose/nerdtree.git'
-NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
-
-NeoBundle 'git://github.com/vim-scripts/buftabs.git'
 
 " ファイル属性 =================================================================
 " 文字エンコード
@@ -64,13 +56,8 @@ syntax on
 set nobackup
 " スワップを作成する
 set swapfile
-
 " スワップを作成するディレクトリ
-if s:is_win()
-	set directory=$HOME/vimfiles/swap
-else
-	set directory=$HOME/.vim/swap
-endif
+set directory=$HOME/.vim/swap
 
 " 基本機能 =====================================================================
 " 全角文字を半角倍幅で表示する
@@ -93,11 +80,6 @@ set ttyfast
 set timeout
 set timeoutlen=1000
 
-" クリップボードをwindowsと共有する
-if s:is_win()
-	set clipboard=unnamed
-endif
-
 " 操作性 =======================================================================
 " バックスペースを有効にする
 set backspace=indent,eol,start
@@ -118,7 +100,7 @@ set statusline=%F%m%r%h%w\%=%{'['.&ff.'/'.(&fenc!=''?&fenc:&enc).']'}[%3l,%3c]
 " 広告を表示しない
 set shortmess+=I
 " スクロール時も表示が維持される行数
-set scrolloff=2
+set scrolloff=4
 " コマンドを表示する
 set showcmd
 " 対応括弧を表示する
@@ -162,40 +144,6 @@ augroup MyExtensionIndent
 	autocmd BufNewFile,BufRead *.rb  setl expandtab shiftwidth=2 tabstop=2
 augroup END
 
-" GUI ==========================================================================
-if has('gui_running')
-	" ウィンドウサイズ
-	set lines=40 columns=120
-	" フォント
-	set guifont=M+2VM+IPAG_circle:h10.8,MS_Gothic:h10.8
-	" クリップボードを共有する
-	set guioptions+=a
-	" メニューバーを表示しない
-	set guioptions-=m
-	" ツールバーを表示しない
-	set guioptions-=T
-	" カーソルの点滅時間
-	set guicursor=a:blinkwait1000-blinkoff600-blinkon600
-	" vimのguiメニューをutf-8に対応させる
-	source $VIMRUNTIME/delmenu.vim
-	set langmenu=menu_ja_jp.utf-8.vim
-	source $VIMRUNTIME/menu.vim
-	" 半透明化
-	gui
-	set transparency=235
-endif
-
-" Kaoriya ======================================================================
-if has('kaoriya')
-	augroup MyKaoriya
-		autocmd!
-		" 改行時にコメントアウト記号を自動挿入しない
-		autocmd FileType * setl formatoptions-=ro
-		" 自動改行しない
-		autocmd FileType * setl textwidth=0
-	augroup END
-endif
-
 " キーマッピング ===============================================================
 " Normal -----------------------------------------------------------------------
 " [,]を<LEADER>にする
@@ -213,6 +161,9 @@ nnoremap k gk
 nnoremap <S-j> gjzz
 nnoremap <S-k> gkzz
 
+" 画面分割
+nnoremap <LEADER>v :<C-u>vsp<CR>
+
 " 分割画面間移動
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
@@ -227,9 +178,6 @@ nnoremap <F10> :<C-u>bn<CR>
 " 検索結果ハイライトを消去する
 nnoremap <ESC><ESC> :<C-u>noh<CR>
 
-" vimgrep
-"nnoremap <LEADER>g :<C-u>vimgrep //j **/*.php \| cw<C-b><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT><RIGHT>
-
 " Insert -----------------------------------------------------------------------
 inoremap jj <ESC>
 inoremap <C-b> <LEFT>
@@ -241,33 +189,6 @@ cnoremap <C-b> <LEFT>
 cnoremap <C-f> <RIGHT>
 
 " プラグイン ===================================================================
-" buftabs ----------------------------------------------------------------------
-" ファイル名のみ表示する
-let g:buftabs_only_basename = 1
-" ステータスラインに表示する
-let g:buftabs_in_statusline = 1
-" カレントバッファのハイライトグループを設定する
-let g:buftabs_active_highlight_group = 'directory'
-
-" 再描写関数
-function! s:buftabs_redraw()
-	let w:original_statusline = matchstr(&statusline, '%=.*')	" ユーザ指定のステータスラインを格納する
-	call Buftabs_enable()										" 描写できるようにする
-	call Buftabs_show(-1)										" 描写する
-endfunction
-command! MyBuftabsRedraw call s:buftabs_redraw()
-
-nnoremap <F8> :<C-u>MyBuftabsRedraw<CR>
-
-" nerd_commenter ---------------------------------------------------------------
-" デフォルトマッピングを初期化
-let g:NERDCreateDefaultMappings = 0
-" コメントアウト時のスペース数
-let NERDSpaceDelims = 1
-
-nmap <LEADER>c <Plug>NERDCommenterToggle
-vmap <LEADER>c <Plug>NERDCommenterToggle
-
 " neocomplcache ----------------------------------------------------------------
 " 自動起動する
 let g:neocomplcache_enable_at_startup = 1
@@ -298,8 +219,12 @@ nnoremap <LEADER>f :<C-u>NERDTreeToggle<CR>
 let g:unite_enable_start_insert = 1
 " 最近使用したファイルの記憶上限
 let g:unite_source_file_mru_limit = 1000
+
 " grepの候補上限
 let g:unite_source_grep_max_candidates = 1000
+" grepのオプション
+let g:unite_source_grep_default_opts = '-Hni'
+
 " yank履歴有効
 let g:unite_source_history_yank_enable = 1
 " yank履歴の記憶上限
@@ -307,12 +232,16 @@ let g:unite_source_history_yank_limit = 1000
 
 " ファイル一覧 (vim起動ディレクトリから)
 nnoremap <LEADER>uu :<C-u>Unite file_rec/async -buffer-name=file<CR>
+" バッファ一覧
+nnoremap <LEADER>b :<C-u>Unite buffer -buffer-name=file<CR>
+" ブクマ一覧
+nnoremap <LEADER>ub :<C-u>Unite bookmark -default-action=cd<CR>
 " 最近使用したファイル一覧
 nnoremap <LEADER>uh :<C-u>Unite file_mru -buffer-name=file<CR>
 " grep
-nnoremap <LEADER>ug :<C-u>Unite grep -no-quit<CR>
+nnoremap <LEADER>g :<C-u>Unite grep -no-quit<CR>/*.
 " yank履歴
-nnoremap <LEADER>uy :<C-u>Unite history/yank<CR>
+nnoremap <LEADER>y :<C-u>Unite history/yank<CR>
 
 " vimshell ---------------------------------------------------------------------
 " ディレクトリ補完時にスラッシュを補う
