@@ -17,6 +17,9 @@ NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 
 NeoBundle 'git://github.com/scrooloose/nerdtree.git'
 
+NeoBundle 'git://github.com/kana/vim-textobj-user.git'
+NeoBundle 'git://github.com/h1mesuke/textobj-wiw.git'
+
 " ファイル属性 =================================================================
 " 文字エンコード
 set encoding=utf-8
@@ -64,21 +67,25 @@ set directory=$HOME/.vim/swap
 set ambiwidth=double
 " ファイルが外部で変更されたときは読み直す
 set autoread
-" 改行時にコメントアウト記号を自動挿入しない
-set formatoptions-=ro
 " バッファの編集を保持したまま、別バッファの展開を可能にする
 set hidden
 " コマンドと検索パターンの履歴数
 set history=1000
 " コマンド実行中に再描画しない
 set lazyredraw
-" 自動改行しない
-set textwidth=0
 " 高速ターミナル接続する
 set ttyfast
 " コマンド確定時間
 set timeout
 set timeoutlen=1000
+
+" 上書きされがちな設定
+augroup MyAutoCommand
+	" 改行時にコメントアウト記号を自動挿入しない
+	autocmd BufNewFile,BufRead * set formatoptions-=ro
+	" 自動改行しない
+	autocmd BufNewFile,BufRead * set textwidth=0
+augroup END
 
 " 操作性 =======================================================================
 " バックスペースを有効にする
@@ -90,7 +97,7 @@ set whichwrap=h,l
 
 " 表示 =========================================================================
 " 行番号を表示する
-set number
+set relativenumber
 " コマンドライン縦幅
 set cmdheight=2
 " ステータスライン位置
@@ -144,6 +151,13 @@ augroup MyExtensionIndent
 	autocmd BufNewFile,BufRead *.rb  setl expandtab shiftwidth=2 tabstop=2
 augroup END
 
+" 言語別 =======================================================================
+" php --------------------------------------------------------------------------
+" 文字列中のsqlをハイライト
+let php_sql_query = 1
+" 文字列中のhtmlをハイライト
+let php_htmlInStrings = 1
+
 " キーマッピング ===============================================================
 " Normal -----------------------------------------------------------------------
 " [,]を<LEADER>にする
@@ -177,6 +191,9 @@ nnoremap <F10> :<C-u>bn<CR>
 
 " 検索結果ハイライトを消去する
 nnoremap <ESC><ESC> :<C-u>noh<CR>
+
+" ペーストモード切り替え
+set pastetoggle=<F12>
 
 " Insert -----------------------------------------------------------------------
 inoremap jj <ESC>
@@ -252,6 +269,18 @@ let g:vimshell_max_command_history = 1000
 nnoremap <LEADER>ss :<C-u>VimShell<CR>
 nnoremap <LEADER>sc :<C-u>VimShellCreate<CR>
 
+" textobj ======================================================================
+" wiw --------------------------------------------------------------------------
+" デフォルトの設定を破棄
+let g:textobj_wiw_no_default_key_mappings = 1
+
+nmap w  <Plug>(textobj-wiw-n)
+nmap b  <Plug>(textobj-wiw-p)
+nmap e  <Plug>(textobj-wiw-N)
+nmap ge <Plug>(textobj-wiw-P)
+omap aw <Plug>(textobj-wiw-a)
+omap iw <Plug>(textobj-wiw-i)
+
 " 自作関数 =====================================================================
 " 構文チェック -----------------------------------------------------------------
 function! s:phpLint()
@@ -303,6 +332,35 @@ command! MyCloseBuffer call s:closeBuffer()
 
 nnoremap <F7> :<C-u>MyCloseBuffer<CR>
 
+" 行数表示形式切り替え ---------------------------------------------------------
+function! s:toggleNumber()
+	if &number
+		set nonumber
+		set relativenumber
+	else
+		set norelativenumber
+		set number
+	endif
+endfunction
+command! MyToggleNumber call s:toggleNumber()
+
+nnoremap <F8> :<C-u>MyToggleNumber<CR>
+
+" 表示簡素化切り替え -----------------------------------------------------------
+function! s:toggleSimpleDisplay()
+	if &list
+		set nonumber
+		set norelativenumber
+		set nolist
+	else
+		set number
+		set list
+	endif
+endfunction
+command! MyToggleSimpleDisplay call s:toggleSimpleDisplay()
+
+nnoremap <F11> :<C-u>MyToggleSimpleDisplay<CR>
+
 " 区切りコメント ---------------------------------------------------------------
 function! s:separateComment(sign, count)
 	exe 'normal! $a' . repeat(a:sign, a:count - strdisplaywidth(getline('.')))
@@ -316,13 +374,13 @@ nnoremap <LEADER>= :<C-u>MySeparateCommentE<CR>
 " 一時コメントアウト -----------------------------------------------------------
 " コメントアウト記号辞書
 let s:commentout_dict = {
-\	'css': {'prefix': '/*', 'suffix': '*/'},
-\	'html': {'prefix': '<!--', 'suffix': '-->'},
-\	'javascript': {'prefix': '//'},
-\	'php': {'prefix': '//'},
-\	'vim': {'prefix': '"'},
-\	'default': {'prefix': '#'}
-\}
+	\'css': {'prefix': '/*', 'suffix': '*/'},
+	\'html': {'prefix': '<!--', 'suffix': '-->'},
+	\'javascript': {'prefix': '//'},
+	\'php': {'prefix': '//'},
+	\'vim': {'prefix': '"'},
+	\'default': {'prefix': '#'}
+	\}
 
 "
 " 一時コメントアウト切り替え
