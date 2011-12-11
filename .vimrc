@@ -379,7 +379,7 @@ let s:commentout_dict = {
 	\'javascript': {'prefix': '//'},
 	\'php': {'prefix': '//'},
 	\'vim': {'prefix': '"'},
-	\'default': {'prefix': '#'}
+	\'default': {'prefix': '#'},
 	\}
 
 "

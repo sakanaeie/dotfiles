@@ -44,6 +44,14 @@ hi WarningMsg	ctermfg=15   ctermbg=9    cterm=NONE guifg=#ffffff guibg=#ff5555 g
 " エラーメッセージ
 hi ErrorMsg		ctermfg=15   ctermbg=9    cterm=NONE guifg=#ffffff guibg=#ff5555 gui=NONE
 
+" タブ =========================================================================
+" タブライン
+hi TabLineFill	ctermfg=247  ctermbg=0    cterm=NONE guifg=#999999 guibg=#000000 gui=NONE
+" カレントタブ
+hi TabLineSel	ctermfg=252  ctermbg=23   cterm=NONE guifg=#cccccc guibg=#223344 gui=NONE
+" 非カレントタブ
+hi TabLine		ctermfg=247  ctermbg=0    cterm=NONE guifg=#999999 guibg=#000000 gui=NONE
+
 " ポップアップ =================================================================
 " メニュー
 hi Pmenu		ctermfg=15   ctermbg=241  cterm=NONE guifg=#ffffff guibg=#666666 gui=NONE
