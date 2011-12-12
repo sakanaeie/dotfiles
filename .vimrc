@@ -17,8 +17,8 @@ NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 
 NeoBundle 'git://github.com/scrooloose/nerdtree.git'
 
-NeoBundle 'git://github.com/kana/vim-textobj-user.git'
-NeoBundle 'git://github.com/h1mesuke/textobj-wiw.git'
+"NeoBundle 'git://github.com/kana/vim-textobj-user.git'
+"NeoBundle 'git://github.com/h1mesuke/textobj-wiw.git'
 
 " ファイル属性 =================================================================
 " 文字エンコード
@@ -256,9 +256,9 @@ nnoremap <LEADER>ub :<C-u>Unite bookmark -default-action=cd<CR>
 " 最近使用したファイル一覧
 nnoremap <LEADER>uh :<C-u>Unite file_mru -buffer-name=file<CR>
 " grep
-nnoremap <LEADER>g :<C-u>Unite grep -no-quit<CR>/*.
+nnoremap <LEADER>ug :<C-u>Unite grep -no-quit<CR>/*.
 " yank履歴
-nnoremap <LEADER>y :<C-u>Unite history/yank<CR>
+nnoremap <LEADER>uy :<C-u>Unite history/yank<CR>
 
 " vimshell ---------------------------------------------------------------------
 " ディレクトリ補完時にスラッシュを補う
@@ -272,14 +272,14 @@ nnoremap <LEADER>sc :<C-u>VimShellCreate<CR>
 " textobj ======================================================================
 " wiw --------------------------------------------------------------------------
 " デフォルトの設定を破棄
-let g:textobj_wiw_no_default_key_mappings = 1
+"let g:textobj_wiw_no_default_key_mappings = 1
 
-nmap w  <Plug>(textobj-wiw-n)
-nmap b  <Plug>(textobj-wiw-p)
-nmap e  <Plug>(textobj-wiw-N)
-nmap ge <Plug>(textobj-wiw-P)
-omap aw <Plug>(textobj-wiw-a)
-omap iw <Plug>(textobj-wiw-i)
+"nmap w  <Plug>(textobj-wiw-n)
+"nmap b  <Plug>(textobj-wiw-p)
+"nmap e  <Plug>(textobj-wiw-N)
+"nmap ge <Plug>(textobj-wiw-P)
+"omap aw <Plug>(textobj-wiw-a)
+"omap iw <Plug>(textobj-wiw-i)
 
 " 自作関数 =====================================================================
 " 構文チェック -----------------------------------------------------------------

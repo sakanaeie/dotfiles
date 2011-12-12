@@ -8,6 +8,17 @@ endif
 
 let colors_name = "mycolor256"
 
+" 
+let s:color_dict = {
+	\'red':    {'c': '9',   'g': 'ff5555'},
+	\'skin':   {'c': '222', 'g': 'ffcc99'},
+	\'sky':    {'c': '117', 'g': '88ccee'},
+	\'olive':  {'c': '190', 'g': 'ccee88'},
+	\'steel':  {'c': '23',  'g': '223344'},
+	\}
+function! s:defineHighlightColor(color)
+endfunction
+
 " 画面 =========================================================================
 " 通常
 hi Normal		ctermfg=15   ctermbg=235  cterm=NONE guifg=#ffffff guibg=#222222 gui=NONE
