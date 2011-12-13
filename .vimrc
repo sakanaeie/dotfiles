@@ -154,7 +154,7 @@ augroup END
 " 言語別 =======================================================================
 " php --------------------------------------------------------------------------
 " 文字列中のsqlをハイライト
-let php_sql_query = 1
+"let php_sql_query = 1
 " 文字列中のhtmlをハイライト
 let php_htmlInStrings = 1
 
@@ -268,6 +268,7 @@ let g:vimshell_max_command_history = 1000
 
 nnoremap <LEADER>ss :<C-u>VimShell<CR>
 nnoremap <LEADER>sc :<C-u>VimShellCreate<CR>
+nnoremap <LEADER>st :<C-u>VimShellTab<CR>
 
 " textobj ======================================================================
 " wiw --------------------------------------------------------------------------
