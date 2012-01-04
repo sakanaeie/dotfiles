@@ -1,153 +1,178 @@
 " 初期化 =======================================================================
 set background=dark
 
-if exists("syntax_on")
-    hi clear
-    syntax reset
+if exists('syntax_on')
+	hi clear
+	syntax reset
 endif
 
-let colors_name = "mycolor256"
+let colors_name = 'mycolor256'
 
-" 
+" 色辞書
 let s:color_dict = {
-	\'red':    {'c': '9',   'g': 'ff5555'},
-	\'skin':   {'c': '222', 'g': 'ffcc99'},
-	\'sky':    {'c': '117', 'g': '88ccee'},
-	\'olive':  {'c': '190', 'g': 'ccee88'},
-	\'steel':  {'c': '23',  'g': '223344'},
+	\'none':		{'c': 'NONE',	'g': 'NONE'},
+	\'black':		{'c': '0',		'g': '000000'},
+	\'red':			{'c': '9',		'g': 'ff5555'},
+	\'white':		{'c': '15',		'g': 'ffffff'},
+	\'teal_green':	{'c': '23',		'g': '005f5f'},
+	\'teal_blue':	{'c': '37',		'g': '00afaf'},
+	\'green':		{'c': '41',		'g': '00d75f'},
+	\'water':		{'c': '44',		'g': '00d7d7'},
+	\'blue':		{'c': '68',		'g': '5f87d7'},
+	\'green2':		{'c': '113',	'g': '87d787'},
+	\'water2':		{'c': '117',	'g': '87d7ff'},
+	\'water3':		{'c': '153',	'g': 'afd7ff'},
+	\'green3':		{'c': '155',	'g': 'aaff66'},
+	\'brown':		{'c': '173',	'g': 'd7875f'},
+	\'purple':		{'c': '189',	'g': 'd7d7ff'},
+	\'olive':		{'c': '190',	'g': 'd7ff87'},
+	\'red2':		{'c': '210',	'g': 'ee7777'},
+	\'pink':		{'c': '213',	'g': 'ff87ff'},
+	\'skin':		{'c': '222',	'g': 'ffd787'},
+	\'cream':		{'c': '229',	'g': 'ffffa0'},
+	\'gray_2':		{'c': '235',	'g': '262626'},
+	\'gray_3':		{'c': '236',	'g': '303030'},
+	\'gray_4':		{'c': '238',	'g': '444444'},
+	\'gray_6':		{'c': '241',	'g': '626262'},
+	\'gray_7':		{'c': '243',	'g': '767676'},
+	\'gray_9':		{'c': '246',	'g': '949494'},
+	\'gray_c':		{'c': '252',	'g': 'd0d0d0'},
 	\}
-function! s:defineHighlightColor(color)
+
+" 設定関数
+function! s:defineHighlightColor(target, fg, bg)
+exe 'hi ' . a:target . ' ctermfg=' . s:color_dict[a:fg]['c'] . ' ctermbg=' . s:color_dict[a:bg]['c'] . ' cterm=NONE guifg=#' . s:color_dict[a:fg]['g'] . ' guibg=#' . s:color_dict[a:bg]['g'] . ' gui=NONE'
 endfunction
 
-" 画面 =========================================================================
+" 通常 =========================================================================
 " 通常
-hi Normal		ctermfg=15   ctermbg=235  cterm=NONE guifg=#ffffff guibg=#222222 gui=NONE
+call s:defineHighlightColor('Normal', 'white', 'gray_2')
 " 行番号
-hi LineNr		ctermfg=247  ctermbg=0    cterm=NONE guifg=#999999 guibg=#000000 gui=NONE
+call s:defineHighlightColor('LineNr', 'gray_9', 'black')
 " ウィンドウ、改行、行末
-hi NonText		ctermfg=247  ctermbg=0    cterm=NONE guifg=#999999 guibg=#000000 gui=NONE
+call s:defineHighlightColor('NonText', 'gray_9', 'black')
 " タブ
-hi SpecialKey	ctermfg=238  ctermbg=235  cterm=NONE guifg=#444444 guibg=#222222 gui=NONE
+call s:defineHighlightColor('SpecialKey', 'gray_4', 'gray_2')
 " 垂直分割区切り
-hi VertSplit	ctermfg=247  ctermbg=0    cterm=NONE guifg=#999999 guibg=#000000 gui=NONE
+call s:defineHighlightColor('VertSplit', 'gray_9', 'black')
 " ステータスライン
-hi StatusLine	ctermfg=252  ctermbg=23   cterm=NONE guifg=#cccccc guibg=#223344 gui=NONE
+call s:defineHighlightColor('StatusLine', 'gray_c', 'teal_green')
 " 非カレントステータスライン
-hi StatusLineNC	ctermfg=247  ctermbg=236  cterm=NONE guifg=#999999 guibg=#333333 gui=NONE
+call s:defineHighlightColor('StatusLineNC', 'gray_9', 'gray_3')
 
 " カーソル =====================================================================
 " カーソル位置
-hi Cursor		ctermfg=0    ctermbg=15   cterm=NONE guifg=#000000 guibg=#ffffff gui=NONE
+call s:defineHighlightColor('Cursor', 'black', 'white')
 " IMEモードカーソル位置
-hi CursorIM		ctermfg=15   ctermbg=9    cterm=NONE guifg=#ffffff guibg=#ff5555 gui=NONE
+call s:defineHighlightColor('CursorIM', 'white', 'red')
 " ヴィジュアルモード選択
-hi Visual		ctermfg=NONE ctermbg=247  cterm=NONE guifg=NONE    guibg=#999999 gui=NONE
+call s:defineHighlightColor('Visual', 'none', 'gray_9')
 
 " コマンドライン ===============================================================
 " モード移行時のメッセージ
-hi ModeMsg		ctermfg=0    ctermbg=191  cterm=NONE guifg=#000000 guibg=#ccee88 gui=NONE
+call s:defineHighlightColor('ModeMsg', 'black', 'olive')
 " スクロールを促すメッセージ
-hi MoreMsg		ctermfg=0    ctermbg=117  cterm=NONE guifg=#000000 guibg=#88ccee gui=NONE
+call s:defineHighlightColor('MoreMsg', 'black', 'water2')
 " エンターを促すメッセージ
-hi Question		ctermfg=9    ctermbg=NONE cterm=NONE guifg=#ff5555 guibg=NONE    gui=NONE
+call s:defineHighlightColor('Question', 'red', 'none')
 " 警告メッセージ
-hi WarningMsg	ctermfg=15   ctermbg=9    cterm=NONE guifg=#ffffff guibg=#ff5555 gui=NONE
+call s:defineHighlightColor('WarningMsg', 'white', 'red')
 " エラーメッセージ
-hi ErrorMsg		ctermfg=15   ctermbg=9    cterm=NONE guifg=#ffffff guibg=#ff5555 gui=NONE
+call s:defineHighlightColor('ErrorMsg', 'white', 'red')
 
 " タブ =========================================================================
 " タブライン
-hi TabLineFill	ctermfg=247  ctermbg=0    cterm=NONE guifg=#999999 guibg=#000000 gui=NONE
+call s:defineHighlightColor('TabLineFill', 'gray_9', 'black')
 " カレントタブ
-hi TabLineSel	ctermfg=252  ctermbg=23   cterm=NONE guifg=#cccccc guibg=#223344 gui=NONE
+call s:defineHighlightColor('TabLine', 'gray_c', 'teal_green')
 " 非カレントタブ
-hi TabLine		ctermfg=247  ctermbg=0    cterm=NONE guifg=#999999 guibg=#000000 gui=NONE
+call s:defineHighlightColor('TabLine', 'gray_9', 'black')
 
 " ポップアップ =================================================================
 " メニュー
-hi Pmenu		ctermfg=15   ctermbg=241  cterm=NONE guifg=#ffffff guibg=#666666 gui=NONE
+call s:defineHighlightColor('Pmenu', 'white', 'gray_6')
 " 選択項目
-hi PmenuSel		ctermfg=236  ctermbg=44   cterm=NONE guifg=#333333 guibg=#33ccff gui=NONE
+call s:defineHighlightColor('PmenuSel', 'gray_3', 'water')
 " スクロールバー
-hi PmenuSbar	ctermfg=0    ctermbg=15   cterm=NONE guifg=#000000 guibg=#ffffff gui=NONE
+call s:defineHighlightColor('PmenuSbar', 'black', 'white')
 " スクロールバーつまみ
-hi PmenuThumb	ctermfg=0    ctermbg=41   cterm=NONE guifg=#000000 guibg=#33cc66 gui=NONE
+call s:defineHighlightColor('PmenuThumb', 'black', 'green')
 
 " 特殊文字 =====================================================================
 " ディレクトリ名
-hi Directory	ctermfg=222  ctermbg=NONE cterm=NONE guifg=#ffcc99 guibg=NONE    gui=NONE
+call s:defineHighlightColor('Directory', 'skin', 'none')
 " 対応括弧
-hi MatchParen	ctermfg=NONE ctermbg=241  cterm=NONE guifg=NONE    guibg=#666666 gui=NONE
+call s:defineHighlightColor('MatchParen', 'none', 'gray_6')
 
 " 検索 =========================================================================
 " 検索
-hi Search		ctermfg=0    ctermbg=191  cterm=NONE guifg=#000000 guibg=#ccee88 gui=NONE
+call s:defineHighlightColor('Search', 'black', 'olive')
 " インクリメント検索
-hi IncSearch	ctermfg=0    ctermbg=117  cterm=NONE guifg=#000000 guibg=#88ccee gui=NONE
+call s:defineHighlightColor('IncSearch', 'black', 'water2')
 
 " シンタックス =================================================================
 " コメント
-hi Comment		ctermfg=243  ctermbg=NONE cterm=NONE guifg=#777777 guibg=NONE    gui=NONE
+call s:defineHighlightColor('Comment', 'gray_7', 'none')
 
 " 定数全般
-hi Constant		ctermfg=113  ctermbg=NONE cterm=NONE guifg=#99cc99 guibg=NONE    gui=NONE
+call s:defineHighlightColor('Constant', 'green2', 'none')
 " 真偽
-hi Boolean		ctermfg=113  ctermbg=NONE cterm=NONE guifg=#99cc99 guibg=NONE    gui=NONE
+call s:defineHighlightColor('Boolean', 'green2', 'none')
 " 文字
-hi Character	ctermfg=113  ctermbg=NONE cterm=NONE guifg=#99cc99 guibg=NONE    gui=NONE
+call s:defineHighlightColor('Character', 'green2', 'none')
 " 文字列
-hi String		ctermfg=155  ctermbg=NONE cterm=NONE guifg=#aaff66 guibg=NONE    gui=NONE
+call s:defineHighlightColor('String', 'green3', 'none')
 " 数値
-hi Number		ctermfg=213  ctermbg=NONE cterm=NONE guifg=#ff77ff guibg=NONE    gui=NONE
+call s:defineHighlightColor('Number', 'pink', 'none')
 " 浮動小数点数
-hi Float		ctermfg=213  ctermbg=NONE cterm=NONE guifg=#ff77ff guibg=NONE    gui=NONE
+call s:defineHighlightColor('Float', 'pink', 'none')
 
 " 関数名、開始タグ
-hi Function		ctermfg=222  ctermbg=NONE cterm=NONE guifg=#ffcc99 guibg=NONE    gui=NONE
+call s:defineHighlightColor('Function', 'skin', 'none')
 " 変数名、終了タグ
-hi Identifier	ctermfg=189  ctermbg=NONE cterm=NONE guifg=#ccccff guibg=NONE    gui=NONE
+call s:defineHighlightColor('Identifier', 'purple', 'none')
 
 " 命令文全般
-hi Statement	ctermfg=68   ctermbg=NONE cterm=NONE guifg=#6699cc guibg=NONE    gui=NONE
+call s:defineHighlightColor('Statement', 'blue', 'none')
 " if
-hi Conditional	ctermfg=68   ctermbg=NONE cterm=NONE guifg=#6699cc guibg=NONE    gui=NONE
+call s:defineHighlightColor('Conditional', 'blue', 'none')
 " for
-hi Repeat		ctermfg=68   ctermbg=NONE cterm=NONE guifg=#6699cc guibg=NONE    gui=NONE
+call s:defineHighlightColor('Repeat', 'blue', 'none')
 " default
-hi Label		ctermfg=68   ctermbg=NONE cterm=NONE guifg=#6699cc guibg=NONE    gui=NONE
+call s:defineHighlightColor('Label', 'blue', 'none')
 " try
-hi Exception	ctermfg=68   ctermbg=NONE cterm=NONE guifg=#6699cc guibg=NONE    gui=NONE
+call s:defineHighlightColor('Exception', 'blue', 'none')
 " 演算子
-hi Operator		ctermfg=117  ctermbg=NONE cterm=NONE guifg=#99ccff guibg=NONE    gui=NONE
+call s:defineHighlightColor('Operator', 'water2', 'none')
 " その他のキーワード
-hi Keyword		ctermfg=117  ctermbg=NONE cterm=NONE guifg=#99ccff guibg=NONE    gui=NONE
+call s:defineHighlightColor('Keyword', 'water2', 'none')
 
 " プリプロセッサ全般
-hi PreProc		ctermfg=210  ctermbg=NONE cterm=NONE guifg=#ee7777 guibg=NONE    gui=NONE
+call s:defineHighlightColor('PreProc', 'red2', 'none')
 " include
-hi Include		ctermfg=210  ctermbg=NONE cterm=NONE guifg=#ee7777 guibg=NONE    gui=NONE
+call s:defineHighlightColor('Include', 'red2', 'none')
 " define
-hi Define		ctermfg=210  ctermbg=NONE cterm=NONE guifg=#ee7777 guibg=NONE    gui=NONE
+call s:defineHighlightColor('Define', 'red2', 'none')
 
 " int、static、typedefなどの宣言全般
-hi Type			ctermfg=229  ctermbg=NONE cterm=NONE guifg=#ffffbb guibg=NONE    gui=NONE
+call s:defineHighlightColor('Type', 'cream', 'none')
 
 " 特殊なシンボル全般
-hi Special		ctermfg=173  ctermbg=NONE cterm=NONE guifg=#dd8866 guibg=NONE    gui=NONE
+call s:defineHighlightColor('Special', 'brown', 'none')
 " デリミタ
-hi Delimiter	ctermfg=37   ctermbg=NONE cterm=NONE guifg=#00bbbb guibg=NONE    gui=NONE
+call s:defineHighlightColor('Delimiter', 'teal_blue', 'none')
 
 " titleタグのインナーテキスト
-hi Title		ctermfg=15   ctermbg=NONE cterm=NONE guifg=#ffffff guibg=NONE    gui=NONE
+call s:defineHighlightColor('Title', 'white', 'none')
 " aタグのインナーテキスト
-hi Underlined	ctermfg=153  ctermbg=NONE cterm=NONE guifg=#bbddff guibg=NONE    gui=NONE
+call s:defineHighlightColor('Underlined', 'water3', 'none')
 
 " 不可視文字
-hi Ignore		ctermfg=252  ctermbg=NONE cterm=NONE guifg=#cccccc guibg=NONE    gui=NONE
+call s:defineHighlightColor('Ignore', 'gray_c', 'none')
 " エラー
-hi Error		ctermfg=15   ctermbg=9    cterm=NONE guifg=#ffffff guibg=#ff5555 gui=NONE
+call s:defineHighlightColor('Error', 'white', 'red')
 " TODO
-hi Todo			ctermfg=0    ctermbg=15   cterm=NONE guifg=#000000 guibg=#ffffff gui=NONE
+call s:defineHighlightColor('Todo', 'black', 'white')
 
 " 便利コマンド -----------------------------------------------------------------
 " so $VIMRUNTIME/syntax/hitest.vim = 現在の設定を確認する
