@@ -151,12 +151,10 @@ augroup MyExtensionIndent
 	autocmd BufNewFile,BufRead *.rb  setl expandtab shiftwidth=2 tabstop=2
 augroup END
 
-" 言語別 =======================================================================
-" php --------------------------------------------------------------------------
-" 文字列中のsqlをハイライト
-"let php_sql_query = 1
-" 文字列中のhtmlをハイライト
-let php_htmlInStrings = 1
+" tags =========================================================================
+set tags=tags
+nnoremap <silent> <LEADER>tt <C-]>
+nnoremap <silent> <LEADER>tu :<C-u>!ctags -R<CR>
 
 " キーマッピング ===============================================================
 " Normal -----------------------------------------------------------------------
@@ -176,18 +174,21 @@ nnoremap <S-j> gjzz
 nnoremap <S-k> gkzz
 
 " 画面分割
+nnoremap <LEADER>s :<C-u>sp<CR>
 nnoremap <LEADER>v :<C-u>vsp<CR>
 
 " 分割画面間移動
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+nnoremap sh <C-w>h
+nnoremap sj <C-w>j
+nnoremap sk <C-w>k
+nnoremap sl <C-w>l
 
 " 前のバッファに移動する
 nnoremap <F9>  :<C-u>bp<CR>
+nnoremap sp  :<C-u>bp<CR>
 " 次のバッファに移動する
-nnoremap <F10> :<C-u>bn<CR>
+nnoremap <F10>  :<C-u>bn<CR>
+nnoremap sn :<C-u>bn<CR>
 
 " 検索結果ハイライトを消去する
 nnoremap <ESC><ESC> :<C-u>noh<CR>
@@ -332,6 +333,7 @@ endfunction
 command! MyCloseBuffer call s:closeBuffer()
 
 nnoremap <F7> :<C-u>MyCloseBuffer<CR>
+nnoremap sd :<C-u>MyCloseBuffer<CR>
 
 " 行数表示形式切り替え ---------------------------------------------------------
 function! s:toggleNumber()
@@ -477,3 +479,6 @@ command! MyToggleTemporaryCommentoutForVisual call s:toggleTemporaryCommentout(1
 
 nnoremap <LEADER>c :<C-u>MyToggleTemporaryCommentoutForNormal<CR>
 vnoremap <LEADER>c :<C-u>MyToggleTemporaryCommentoutForVisual<CR>
+
+" JsonDecode -------------------------------------------------------------------
+command! MyJsonDecode exe '! echo ''' . substitute(@@, '\n$', '', '') . ''' | php -R ''print_r(json_decode($argn));'''
