@@ -15,6 +15,8 @@ NeoBundle 'git://github.com/Shougo/vimshell.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 
+NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
+
 NeoBundle 'git://github.com/scrooloose/nerdtree.git'
 
 "NeoBundle 'git://github.com/kana/vim-textobj-user.git'
@@ -173,6 +175,10 @@ nnoremap k gk
 nnoremap <S-j> gjzz
 nnoremap <S-k> gkzz
 
+" 行頭行末
+noremap <S-a> 0
+noremap <S-e> $
+
 " 画面分割
 nnoremap <LEADER>s :<C-u>sp<CR>
 nnoremap <LEADER>v :<C-u>vsp<CR>
@@ -271,6 +277,12 @@ nnoremap <LEADER>ss :<C-u>VimShell<CR>
 nnoremap <LEADER>sc :<C-u>VimShellCreate<CR>
 nnoremap <LEADER>st :<C-u>VimShellTab<CR>
 
+" alignta ----------------------------------------------------------------------
+" 簡易呼び出し
+xnoremap a ::Alignta 
+" 連想配列向け
+nnoremap <LEADER>a vi(:-1:Alignta =><CR>
+
 " textobj ======================================================================
 " wiw --------------------------------------------------------------------------
 " デフォルトの設定を破棄
@@ -356,7 +368,7 @@ function! s:toggleSimpleDisplay()
 		set norelativenumber
 		set nolist
 	else
-		set number
+		set relativenumber
 		set list
 	endif
 endfunction
