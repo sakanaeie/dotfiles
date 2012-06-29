@@ -19,6 +19,8 @@ NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 
 NeoBundle 'git://github.com/scrooloose/nerdtree.git'
 
+NeoBundle 'git://github.com/scrooloose/syntastic.git'
+
 "NeoBundle 'git://github.com/kana/vim-textobj-user.git'
 "NeoBundle 'git://github.com/h1mesuke/textobj-wiw.git'
 
@@ -148,8 +150,8 @@ set tabstop=4
 " 特定の拡張子ファイルのみインデント設定を変更
 augroup MyExtensionIndent
 	autocmd!
-	autocmd BufNewFile,BufRead *.css setl shiftwidth=2 tabstop=2
-	autocmd BufNewFile,BufRead *.js  setl shiftwidth=2 tabstop=2
+"	autocmd BufNewFile,BufRead *.css setl shiftwidth=2 tabstop=2
+"	autocmd BufNewFile,BufRead *.js  setl shiftwidth=2 tabstop=2
 	autocmd BufNewFile,BufRead *.rb  setl expandtab shiftwidth=2 tabstop=2
 augroup END
 
@@ -176,8 +178,8 @@ nnoremap <S-j> gjzz
 nnoremap <S-k> gkzz
 
 " 行頭行末
-noremap <S-a> 0
-noremap <S-e> $
+noremap <C-a> 0
+noremap <C-e> $
 
 " 画面分割
 nnoremap <LEADER>s :<C-u>sp<CR>
@@ -243,6 +245,8 @@ nnoremap <LEADER>f :<C-u>NERDTreeToggle<CR>
 let g:unite_enable_start_insert = 1
 " 最近使用したファイルの記憶上限
 let g:unite_source_file_mru_limit = 1000
+" セッション保存
+let g:unite_source_session_enable_auto_save = 1
 
 " grepの候補上限
 let g:unite_source_grep_max_candidates = 1000
@@ -263,7 +267,7 @@ nnoremap <LEADER>ub :<C-u>Unite bookmark -default-action=cd<CR>
 " 最近使用したファイル一覧
 nnoremap <LEADER>uh :<C-u>Unite file_mru -buffer-name=file<CR>
 " grep
-nnoremap <LEADER>ug :<C-u>Unite grep -no-quit<CR>/*.
+nnoremap <LEADER>ug :<C-u>Unite grep -no-quit<CR><BS>**/*.
 " yank履歴
 nnoremap <LEADER>uy :<C-u>Unite history/yank<CR>
 
@@ -282,6 +286,17 @@ nnoremap <LEADER>st :<C-u>VimShellTab<CR>
 xnoremap a ::Alignta 
 " 連想配列向け
 nnoremap <LEADER>a vi(:-1:Alignta =><CR>
+
+" syntastic --------------------------------------------------------------------
+" モード設定
+let g:syntastic_mode_map = {
+	\'mode': 'passive',
+	\'active_filetypes': ['php', 'ruby', 'javascript'],
+	\'passive_filetypes': [],
+	\}
+
+" jsの構文チェックは、jslintでなくjshintを利用する
+let g:syntastic_javascript_checker = 'jshint'
 
 " textobj ======================================================================
 " wiw --------------------------------------------------------------------------
