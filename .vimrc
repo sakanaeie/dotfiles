@@ -10,16 +10,25 @@ if has('vim_starting')
 endif
 filetype plugin indent on
 
+NeoBundle 'git://github.com/thinca/vim-singleton.git'
+if has('gui_running') && has('clientserver') && s:has_plugin('singleton')
+	call singleton#enable()
+endif
+
 NeoBundle 'git://github.com/Shougo/vimproc.git'
 NeoBundle 'git://github.com/Shougo/vimshell.git'
+NeoBundle 'git://github.com/Shougo/vimfiler.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 
+NeoBundle 'git://github.com/scrooloose/nerdtree.git'
+NeoBundle 'git://github.com/scrooloose/syntastic.git'
+
+NeoBundle 'git://github.com/vim-scripts/Visual-Mark.git'
+
 NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 
-NeoBundle 'git://github.com/scrooloose/nerdtree.git'
-
-NeoBundle 'git://github.com/scrooloose/syntastic.git'
+"NeoBundle 'git://github.com/yuratomo/w3m.vim.git'
 
 "NeoBundle 'git://github.com/kana/vim-textobj-user.git'
 "NeoBundle 'git://github.com/h1mesuke/textobj-wiw.git'
@@ -101,7 +110,7 @@ set whichwrap=h,l
 
 " 表示 =========================================================================
 " 行番号を表示する
-set relativenumber
+set number
 " コマンドライン縦幅
 set cmdheight=2
 " ステータスライン位置
@@ -157,8 +166,10 @@ augroup END
 
 " tags =========================================================================
 set tags=tags
-nnoremap <silent> <LEADER>tt <C-]>
-nnoremap <silent> <LEADER>tu :<C-u>!ctags -R<CR>
+
+" 戻る
+nnoremap <silent> <C-[> <C-t>
+nnoremap <silent> <F2> :<C-u>!ctags -R<CR>
 
 " キーマッピング ===============================================================
 " Normal -----------------------------------------------------------------------
@@ -182,7 +193,6 @@ noremap <C-a> 0
 noremap <C-e> $
 
 " 画面分割
-nnoremap <LEADER>s :<C-u>sp<CR>
 nnoremap <LEADER>v :<C-u>vsp<CR>
 
 " 分割画面間移動
@@ -192,11 +202,16 @@ nnoremap sk <C-w>k
 nnoremap sl <C-w>l
 
 " 前のバッファに移動する
-nnoremap <F9>  :<C-u>bp<CR>
 nnoremap sp  :<C-u>bp<CR>
 " 次のバッファに移動する
-nnoremap <F10>  :<C-u>bn<CR>
 nnoremap sn :<C-u>bn<CR>
+
+" 前のタブに移動する
+nnoremap stp  :<C-u>tabp<CR>
+" 次のタブに移動する
+nnoremap stn :<C-u>tabn<CR>
+" 新しいタブを開く
+nnoremap <LEADER>n :<C-u>tabnew<CR>
 
 " 検索結果ハイライトを消去する
 nnoremap <ESC><ESC> :<C-u>noh<CR>
@@ -206,11 +221,13 @@ set pastetoggle=<F12>
 
 " Insert -----------------------------------------------------------------------
 inoremap jj <ESC>
+inoremap j<SPACE> j
 inoremap <C-b> <LEFT>
 inoremap <C-f> <RIGHT>
 
 " Command ----------------------------------------------------------------------
 cnoremap jj <ESC>
+cnoremap j<SPACE> j
 cnoremap <C-b> <LEFT>
 cnoremap <C-f> <RIGHT>
 
@@ -238,7 +255,7 @@ let g:NERDChristmasTree  = 1
 let g:NERDTreeShowHidden = 1
 
 " ファイラ表示切替
-nnoremap <LEADER>f :<C-u>NERDTreeToggle<CR>
+nnoremap <silent> <LEADER>f :<C-u>NERDTreeToggle<CR>
 
 " unite ------------------------------------------------------------------------
 " インサートモードで起動する
@@ -281,6 +298,11 @@ nnoremap <LEADER>ss :<C-u>VimShell<CR>
 nnoremap <LEADER>sc :<C-u>VimShellCreate<CR>
 nnoremap <LEADER>st :<C-u>VimShellTab<CR>
 
+" Visual-Mark ------------------------------------------------------------------
+map <unique> <LEADER>hh <Plug>Vm_toggle_sign
+map <unique> <LEADER>hn <Plug>Vm_goto_next_sign
+map <unique> <LEADER>hp <Plug>Vm_goto_prev_sign
+
 " alignta ----------------------------------------------------------------------
 " 簡易呼び出し
 xnoremap a ::Alignta 
@@ -298,6 +320,9 @@ let g:syntastic_mode_map = {
 " jsの構文チェックは、jslintでなくjshintを利用する
 let g:syntastic_javascript_checker = 'jshint'
 
+" 手動呼び出し
+nnoremap <LEADER>l :<C-u>SyntasticCheck<CR>
+
 " textobj ======================================================================
 " wiw --------------------------------------------------------------------------
 " デフォルトの設定を破棄
@@ -311,30 +336,6 @@ let g:syntastic_javascript_checker = 'jshint'
 "omap iw <Plug>(textobj-wiw-i)
 
 " 自作関数 =====================================================================
-" 構文チェック -----------------------------------------------------------------
-function! s:phpLint()
-	let l:result = system(&ft . ' -l ' . expand('%:p'))
-
-	if 'No syntax errors' == strpart(l:result, 0, 16)
-		" エラーなしのとき、メッセージを省略する
-		let l:result = 'No syntax errors'
-	endif
-
-	echo l:result
-endfunction
-command! MyPhpLint call s:phpLint()
-
-function! s:rubyLint()
-	echo system(&ft . ' -c ' . expand('%:p'))
-endfunction
-command! MyRubyLint call s:rubyLint()
-
-augroup MyLint
-	autocmd!
-	autocmd BufNewFile,BufRead *.php nnoremap <buffer> ,l :<C-u>MyPhpLint<CR>
-	autocmd BufNewFile,BufRead *.rb  nnoremap <buffer> ,l :<C-u>MyRubyLint<CR>
-augroup END
-
 " 分割画面保持バッファクローズ -------------------------------------------------
 function! s:closeBuffer()
 	let l:cur_buf = bufnr('%')	" カレントバッファの番号
@@ -359,31 +360,15 @@ function! s:closeBuffer()
 endfunction
 command! MyCloseBuffer call s:closeBuffer()
 
-nnoremap <F7> :<C-u>MyCloseBuffer<CR>
 nnoremap sd :<C-u>MyCloseBuffer<CR>
-
-" 行数表示形式切り替え ---------------------------------------------------------
-function! s:toggleNumber()
-	if &number
-		set nonumber
-		set relativenumber
-	else
-		set norelativenumber
-		set number
-	endif
-endfunction
-command! MyToggleNumber call s:toggleNumber()
-
-nnoremap <F8> :<C-u>MyToggleNumber<CR>
 
 " 表示簡素化切り替え -----------------------------------------------------------
 function! s:toggleSimpleDisplay()
 	if &list
 		set nonumber
-		set norelativenumber
 		set nolist
 	else
-		set relativenumber
+		set number
 		set list
 	endif
 endfunction
