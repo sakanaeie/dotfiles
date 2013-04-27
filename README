@@ -8,3 +8,5 @@ vi
 # vimprocをmake
 cd .vim/bundle/vimproc/
 make -f make_gcc.mak
+
+# phpのマニュアルを .vim/phpmanual に配置 (http://jp.php.net/download-docs.php)

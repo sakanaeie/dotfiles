@@ -11,8 +11,9 @@ do
 	ln -Fis "$PWD/$dotfile" $HOME
 done
 
-mkdir .vim/swap
-mkdir .vim/bundle
+mkdir -p .vim/swap
+mkdir -p .vim/bundle
+mkdir -p .vim/phpmanual
 
 git submodule init
 git submodule update

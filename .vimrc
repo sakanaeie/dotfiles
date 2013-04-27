@@ -15,11 +15,20 @@ if has('gui_running') && has('clientserver') && s:has_plugin('singleton')
 	call singleton#enable()
 endif
 
-NeoBundle 'git://github.com/Shougo/vimproc.git'
+NeoBundle 'git://github.com/Shougo/vimproc.git', {
+\	'build': {
+\		'mac': 'make -f make_mac.mak',
+\		'unix': 'make -f make_unix.mak',
+\	},
+\}
+
 NeoBundle 'git://github.com/Shougo/vimshell.git'
 NeoBundle 'git://github.com/Shougo/vimfiler.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/neocomplcache.git'
+
+NeoBundle 'git://github.com/thinca/vim-ref.git'
+NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 
 NeoBundle 'git://github.com/scrooloose/nerdtree.git'
 NeoBundle 'git://github.com/scrooloose/syntastic.git'
@@ -28,10 +37,7 @@ NeoBundle 'git://github.com/vim-scripts/Visual-Mark.git'
 
 NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 
-"NeoBundle 'git://github.com/yuratomo/w3m.vim.git'
-
-"NeoBundle 'git://github.com/kana/vim-textobj-user.git'
-"NeoBundle 'git://github.com/h1mesuke/textobj-wiw.git'
+NeoBundle 'git://github.com/yuratomo/w3m.vim.git'
 
 " ファイル属性 =================================================================
 " 文字エンコード
@@ -116,7 +122,7 @@ set cmdheight=2
 " ステータスライン位置
 set laststatus=2
 " ステータスライン表示情報
-set statusline=%F%m%r%h%w\%=%{'['.&ff.'/'.(&fenc!=''?&fenc:&enc).']'}[%3l,%3c]
+set statusline=%F%m%r%h%w\%=%{'['.&ff.'/'.(&fenc!=''?&fenc:&enc).'/'.&ft.']'}[%3l,%3c]
 " 広告を表示しない
 set shortmess+=I
 " スクロール時も表示が維持される行数
@@ -278,9 +284,9 @@ let g:unite_source_history_yank_limit = 1000
 " ファイル一覧 (vim起動ディレクトリから)
 nnoremap <LEADER>uu :<C-u>Unite file_rec/async -buffer-name=file<CR>
 " バッファ一覧
-nnoremap <LEADER>b :<C-u>Unite buffer -buffer-name=file<CR>
-" ブクマ一覧
-nnoremap <LEADER>ub :<C-u>Unite bookmark -default-action=cd<CR>
+nnoremap <LEADER>ub :<C-u>Unite buffer -buffer-name=file<CR>
+" タブ一覧
+nnoremap <LEADER>ut :<C-u>Unite tab<CR>
 " 最近使用したファイル一覧
 nnoremap <LEADER>uh :<C-u>Unite file_mru -buffer-name=file<CR>
 " grep
@@ -305,17 +311,17 @@ map <unique> <LEADER>hp <Plug>Vm_goto_prev_sign
 
 " alignta ----------------------------------------------------------------------
 " 簡易呼び出し
-xnoremap a ::Alignta 
+xnoremap a ::Alignta<SPACE>
 " 連想配列向け
 nnoremap <LEADER>a vi(:-1:Alignta =><CR>
 
 " syntastic --------------------------------------------------------------------
 " モード設定
 let g:syntastic_mode_map = {
-	\'mode': 'passive',
-	\'active_filetypes': ['php', 'ruby', 'javascript'],
-	\'passive_filetypes': [],
-	\}
+\	'mode': 'passive',
+\	'active_filetypes': ['php', 'ruby', 'javascript'],
+\	'passive_filetypes': [],
+\}
 
 " jsの構文チェックは、jslintでなくjshintを利用する
 let g:syntastic_javascript_checker = 'jshint'
@@ -323,17 +329,36 @@ let g:syntastic_javascript_checker = 'jshint'
 " 手動呼び出し
 nnoremap <LEADER>l :<C-u>SyntasticCheck<CR>
 
-" textobj ======================================================================
-" wiw --------------------------------------------------------------------------
-" デフォルトの設定を破棄
-"let g:textobj_wiw_no_default_key_mappings = 1
+" vimref -----------------------------------------------------------------------
+" phpmanual
+let g:ref_phpmanual_path = $HOME . '/dotfiles/.vim/phpmanual/'
+nnoremap <LEADER>rp :<C-u>Ref phpmanual<SPACE>
 
-"nmap w  <Plug>(textobj-wiw-n)
-"nmap b  <Plug>(textobj-wiw-p)
-"nmap e  <Plug>(textobj-wiw-N)
-"nmap ge <Plug>(textobj-wiw-P)
-"omap aw <Plug>(textobj-wiw-a)
-"omap iw <Plug>(textobj-wiw-i)
+" 辞書サイト
+let g:ref_source_webdict_sites = {
+\	'je': {
+\		'url': 'http://eow.alc.co.jp/search?q=%s',
+\	},
+\}
+" デフォルトのサイト
+let g:ref_source_webdict_sites.default = 'je'
+" 出力に対するフィルタ
+function! g:ref_source_webdict_sites.je.filter(output)
+	return join(split(a:output, "\n")[40 :], "\n")
+endfunction
+nnoremap <Leader>rj :<C-u>Ref webdict je<SPACE>
+
+" quickrun ---------------------------------------------------------------------
+" 詳細設定
+let g:quickrun_config = {
+\	'_': {
+\		'runner': 'vimproc',
+\		'runner/vimproc/updatetime': 10,
+\		'outputter/buffer/split': ':botright',
+\		'outputter/buffer/close_on_empty': 1,
+\		'hook/time/enable': 1,
+\	}
+\}
 
 " 自作関数 =====================================================================
 " 分割画面保持バッファクローズ -------------------------------------------------
@@ -385,112 +410,3 @@ command! MySeparateCommentE call s:separateComment('=', 80)
 
 nnoremap <LEADER>- :<C-u>MySeparateCommentH<CR>
 nnoremap <LEADER>= :<C-u>MySeparateCommentE<CR>
-
-" 一時コメントアウト -----------------------------------------------------------
-" コメントアウト記号辞書
-let s:commentout_dict = {
-	\'css': {'prefix': '/*', 'suffix': '*/'},
-	\'html': {'prefix': '<!--', 'suffix': '-->'},
-	\'javascript': {'prefix': '//'},
-	\'php': {'prefix': '//'},
-	\'vim': {'prefix': '"'},
-	\'default': {'prefix': '#'},
-	\}
-
-"
-" 一時コメントアウト切り替え
-"
-" 取り付け/取り除き処理の切り替え条件は、処理対象の最初の行の行末/行頭がコメントアウトされているかどうかである
-" ただし、厳密な意味で'行頭(0)/行末($)'を指す
-"
-" @param	int		mode	0:NormalMode / 1:VisualMode
-"
-function! s:toggleTemporaryCommentout(mode)
-	" ファイルタイプによる、記号の選定
-	if has_key(s:commentout_dict, &filetype)
-		" コメントアウト記号辞書にあるとき、それを使用する
-		let l:sign_row = s:commentout_dict[&filetype]
-	else
-		" ないとき、default を利用する
-		let l:sign_row= s:commentout_dict['default']
-	endif
-
-	" 始端/終端記号の決定
-	let l:sign_hash = {}
-	for l:side in ['prefix', 'suffix']
-		if has_key(l:sign_row, l:side)
-			" prefix / suffix が辞書にあるとき
-			if 'prefix' == l:side
-				" prefix のとき、記号の後にスペースをつける
-				let l:sign_hash[l:side] = l:sign_row[l:side] . ' '
-			else
-				" suffix のとき、記号の前にスペースをつける
-				let l:sign_hash[l:side] = ' ' . l:sign_row[l:side]
-			endif
-		else
-			" ないとき
-			let l:sign_hash[l:side] = ''
-		endif
-	endfor
-
-	" Normal / Visual モードによる、処理対象行の決定
-	if 0 == a:mode
-		" Normalモードのとき
-		let l:first_line = line('.')
-		let l:last_line  = l:first_line
-	else
-		" Visualモードのとき
-		let l:first_line = line("'<")	" 選択範囲の上端
-		let l:last_line  = line("'>")	" 選択範囲の下端
-	endif
-
-	" 処理モードの変数/定数
-	let l:action_mode = 0	" 取り付け / 取り除き / 初期状態(モード決定前) を区別するための変数
-	let l:const_add   = 1	" 取り付けを表わす定数
-	let l:const_del   = 2	" 取り除きを表わす定数
-
-	" コメントアウト記号の取り付け/取り除き処理 (ループ内における初回の処理でモードを決定する)
-	while l:first_line <= l:last_line
-		let l:cur_str = getline(l:first_line)
-
-		if '' != l:cur_str
-			" 行が空でないとき
-
-			if l:const_add != l:action_mode
-				" 取り除きor初期状態のとき
-				let l:prefix_pos =  stridx(l:cur_str, l:sign_hash['prefix'])
-				let l:suffix_pos = strridx(l:cur_str, l:sign_hash['suffix'])
-				let l:strlen_without_suffix = strlen(l:cur_str) - strlen(l:sign_hash['suffix'])
-			endif
-
-			if l:const_add != l:action_mode && (0 == l:prefix_pos && l:strlen_without_suffix == l:suffix_pos)
-				" 取り除きor初期状態 and 行頭と行末に記号があるとき
-
-				" prefix / suffix を取り除いて置き換える
-				let l:strlen_prefix = strlen(l:sign_hash['prefix'])
-				call setline(l:first_line, strpart(l:cur_str, l:strlen_prefix, l:strlen_without_suffix - l:strlen_prefix))
-
-				" 処理モードを'取り除き'で決定
-				let l:action_mode = l:const_del
-			elseif l:const_del != l:action_mode
-				" 取り付けor初期状態のとき
-
-				" prefix / suffix を取り付けて置き換える
-				call setline(l:first_line, substitute(l:cur_str, '^\(.*\)$', l:sign_hash['prefix'] . '\1' . l:sign_hash['suffix'], ''))
-
-				" 処理モードを'取り付け'で決定
-				let l:action_mode = l:const_add
-			endif
-		end
-
-		let l:first_line = l:first_line + 1
-	endwhile
-endfunction
-command! MyToggleTemporaryCommentoutForNormal call s:toggleTemporaryCommentout(0)
-command! MyToggleTemporaryCommentoutForVisual call s:toggleTemporaryCommentout(1)
-
-nnoremap <LEADER>c :<C-u>MyToggleTemporaryCommentoutForNormal<CR>
-vnoremap <LEADER>c :<C-u>MyToggleTemporaryCommentoutForVisual<CR>
-
-" JsonDecode -------------------------------------------------------------------
-command! MyJsonDecode exe '! echo ''' . substitute(@@, '\n$', '', '') . ''' | php -R ''print_r(json_decode($argn));'''
