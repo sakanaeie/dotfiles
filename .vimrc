@@ -37,7 +37,7 @@ NeoBundle 'git://github.com/vim-scripts/Visual-Mark.git'
 
 NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 
-NeoBundle 'git://github.com/yuratomo/w3m.vim.git'
+" NeoBundle 'git://github.com/yuratomo/w3m.vim.git'
 
 " ファイル属性 =================================================================
 " 文字エンコード
