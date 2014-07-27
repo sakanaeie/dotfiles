@@ -82,6 +82,12 @@ set swapfile
 " スワップを作成するディレクトリ
 set directory=$HOME/.vim/swap
 
+augroup MyMacCrontab
+	autocmd!
+	" crontabで発生するいざこざを回避する
+	autocmd BufRead /private/tmp/crontab.* set backupcopy=yes
+augroup END
+
 " 基本機能 =====================================================================
 " 全角文字を半角倍幅で表示する
 set ambiwidth=double
@@ -101,6 +107,7 @@ set timeoutlen=1000
 
 " 上書きされがちな設定
 augroup MyAutoCommand
+	autocmd!
 	" 改行時にコメントアウト記号を自動挿入しない
 	autocmd BufNewFile,BufRead * set formatoptions-=ro
 	" 自動改行しない
