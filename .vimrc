@@ -169,6 +169,16 @@ augroup MyExtensionIndent
 	autocmd BufNewFile,BufRead *.rb  setl expandtab shiftwidth=2 tabstop=2
 augroup END
 
+" 言語別 =======================================================================
+" php --------------------------------------------------------------------------
+" mysqlをハイライトする
+let g:sql_type_default='mysql'
+let php_sql_query = 1
+" htmlをハイライトする
+let php_htmlInStrings = 1
+" baselib?をハイライトする
+let php_baselib = 1
+
 " キーマッピング ===============================================================
 " Normal -----------------------------------------------------------------------
 " [,]を<LEADER>にする
