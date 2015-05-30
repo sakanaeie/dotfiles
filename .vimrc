@@ -289,6 +289,8 @@ if executable('ag')
 	let g:unite_source_grep_default_opts = '--nogroup --nocolor'
 	let g:unite_source_grep_recursive_opt = ''
 endif
+" ref
+nnoremap <LEADER>rp :<C-u>Unite ref/phpmanual<CR>
 
 " neocomplcache ----------------------------------------------------------------
 " TODO neocompleteに置き換え
@@ -301,8 +303,7 @@ let g:neocomplcache_min_syntax_length = 3
 
 " vim-ref ----------------------------------------------------------------------
 " phpmanual
-let g:ref_phpmanual_path = $HOME . '/dotfiles/.vim/phpmanual/'
-nnoremap <LEADER>rp :<C-u>Ref phpmanual<SPACE>
+let g:ref_phpmanual_path = $HOME . '/dotfiles/.vim/ref/php-chunked-xhtml'
 
 " quickrun ---------------------------------------------------------------------
 " 詳細設定

@@ -22,6 +22,21 @@ cd .vim/bundle/vimproc/
 make -f make_gcc.mak
 ```
 
+## 言語単位での導入手順
+
+* w3mをインストールしておく
+
+### php
+
+* http://jp2.php.net/download-docs.php からリファレンスを取得
+
+```
+# アドレスはそのたびごとに確認
+cd .vim/ref
+wget http://jp2.php.net/get/php_manual_ja.tar.gz/from/this/mirror
+tar zxvf php_manual_jp.tar.gz
+```
+
 ## プロジェクト単位での導入手順
 
 * ctagsを生成
@@ -35,6 +50,7 @@ ctags -R --languages=php
 ## メモ
 
 * 忘れがちなものたち
+	* ,rp # phpmanual
 	* ,t # タブ
 	* Ctrl-h/l # タブ移動
 	* ,r # quickrun

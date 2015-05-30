@@ -14,7 +14,7 @@ done
 
 mkdir -p .vim/swap
 mkdir -p .vim/bundle
-mkdir -p .vim/phpmanual
+mkdir -p .vim/ref
 
 git submodule init
 git submodule update
