@@ -315,6 +315,17 @@ let g:neocomplcache_min_syntax_length = 3
 " phpmanual
 let g:ref_phpmanual_path = $HOME . '/dotfiles/.vim/ref/php-chunked-xhtml'
 
+" alc
+let g:ref_source_webdict_sites = {
+\	'alc': {
+\		'url': 'http://eow.alc.co.jp/%s/UTF-8/',
+\	}
+\}
+function! g:ref_source_webdict_sites.alc.filter(output)
+	return join(split(a:output, "\n")[20 :], "\n")
+endfunction
+nnoremap <LEADER>ra :Ref webdict alc<SPACE>
+
 " quickrun ---------------------------------------------------------------------
 " 詳細設定
 let g:quickrun_config = {
@@ -324,7 +335,7 @@ let g:quickrun_config = {
 \		'outputter/buffer/split': ':botright',
 \		'outputter/buffer/close_on_empty': 1,
 \		'hook/time/enable': 1,
-\	}
+\	},
 \}
 
 " nerdtree ---------------------------------------------------------------------
