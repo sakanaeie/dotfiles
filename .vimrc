@@ -10,21 +10,16 @@ if has('vim_starting')
 endif
 filetype plugin indent on
 
-NeoBundle 'git://github.com/thinca/vim-singleton.git'
-if has('gui_running') && has('clientserver') && s:has_plugin('singleton')
-	call singleton#enable()
-endif
-
 NeoBundle 'git://github.com/Shougo/vimproc.git', {
 \	'build': {
-\		'mac': 'make -f make_mac.mak',
+\		'mac':  'make -f make_mac.mak',
 \		'unix': 'make -f make_unix.mak',
 \	},
 \}
 
 NeoBundle 'Shougo/vimshell.vim'
-NeoBundle 'Shougo/vimfiler.vim'
 NeoBundle 'Shougo/unite.vim'
+" TODO neocompleteに置き換え
 NeoBundle 'Shougo/neocomplcache.vim'
 NeoBundle 'Shougo/neomru.vim'
 
@@ -34,11 +29,7 @@ NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/scrooloose/nerdtree.git'
 NeoBundle 'git://github.com/scrooloose/syntastic.git'
 
-NeoBundle 'git://github.com/vim-scripts/Visual-Mark.git'
-
 NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
-
-" NeoBundle 'git://github.com/yuratomo/w3m.vim.git'
 
 " ファイル属性 =================================================================
 " 文字エンコード
@@ -130,7 +121,7 @@ set cmdheight=2
 " ステータスライン位置
 set laststatus=2
 " ステータスライン表示情報
-set statusline=%F%m%r%h%w\%=%{'['.&ff.'/'.(&fenc!=''?&fenc:&enc).'/'.&ft.']'}[%3l,%3c]
+set statusline=%F%m%r%h%w%=[%{&ff.','.(&fenc!=''?&fenc:&enc).','.&ft}]\ [%3l,%3c]\ (╹◡╹๑)
 " 広告を表示しない
 set shortmess+=I
 " スクロール時も表示が維持される行数
@@ -178,13 +169,6 @@ augroup MyExtensionIndent
 	autocmd BufNewFile,BufRead *.rb  setl expandtab shiftwidth=2 tabstop=2
 augroup END
 
-" tags =========================================================================
-set tags=tags
-
-" 戻る
-nnoremap <silent> <C-[> <C-t>
-nnoremap <silent> <F2> :<C-u>!ctags -R<CR>
-
 " キーマッピング ===============================================================
 " Normal -----------------------------------------------------------------------
 " [,]を<LEADER>にする
@@ -197,6 +181,11 @@ nnoremap : ;
 " 表示行単位移動
 nnoremap j gj
 nnoremap k gk
+
+" 多め移動
+" TODO 使わないので有意義な利用法を探す
+nnoremap <C-j> gjgjgjgjzz
+nnoremap <C-k> gkgkgkgkzz
 
 " カーソル画面中央固定移動
 nnoremap <S-j> gjzz
@@ -215,61 +204,56 @@ nnoremap sj <C-w>j
 nnoremap sk <C-w>k
 nnoremap sl <C-w>l
 
-" 前のバッファに移動する
-nnoremap sp  :<C-u>bp<CR>
-" 次のバッファに移動する
-nnoremap sn :<C-u>bn<CR>
+" 分割画面サイズ変更
+nnoremap s< <C-w>4<
+nnoremap s+ <C-w>+
+nnoremap s- <C-w>-
+nnoremap s> <C-w>4>
 
-" 前のタブに移動する
-nnoremap stp  :<C-u>tabp<CR>
-" 次のタブに移動する
-nnoremap stn :<C-u>tabn<CR>
 " 新しいタブを開く
-nnoremap <LEADER>n :<C-u>tabnew<CR>
+nnoremap <LEADER>t :<C-u>tabnew<CR>
 
-" 検索結果ハイライトを消去する
+" タブ間移動
+nnoremap <C-h> gt
+nnoremap <C-l> gT
+
+" 行末までヤンク
+nnoremap Y y$
+
+" 検索結果ハイライトを消す
 nnoremap <ESC><ESC> :<C-u>noh<CR>
+
+" ctags
+nnoremap <RETURN> g<C-]>
+nnoremap <BS> <C-t>
 
 " ペーストモード切り替え
 set pastetoggle=<F12>
 
 " Insert -----------------------------------------------------------------------
 inoremap jj <ESC>
-inoremap j<SPACE> j
+inoremap j; <ESC>
 inoremap <C-b> <LEFT>
 inoremap <C-f> <RIGHT>
+inoremap <C-e> <END>
+inoremap <C-a> <HOME>
 
 " Command ----------------------------------------------------------------------
-cnoremap jj <ESC>
-cnoremap j<SPACE> j
 cnoremap <C-b> <LEFT>
 cnoremap <C-f> <RIGHT>
+cnoremap <C-e> <END>
+cnoremap <C-a> <HOME>
 
 " プラグイン ===================================================================
-" neocomplcache ----------------------------------------------------------------
-" 自動起動する
-let g:neocomplcache_enable_at_startup = 1
-" アンダースコア区切り補完有効
-let g:neocomplcache_enable_underbar_completion = 1
-" シンタックスキャッシュ時の最短文字列長
-let g:neocomplcache_min_syntax_length = 3
+" vimshell ---------------------------------------------------------------------
+" ディレクトリ補完時にスラッシュを補う
+let g:vimshell_enable_auto_slash = 1
+" 履歴数
+let g:vimshell_max_command_history = 1000
 
-" snippet
-let g:neocomplcache_snippets_dir = '~/.vim/snippets'
-imap <C-k> <Plug>(neocomplcache_snippets_expand)
-smap <C-k> <Plug>(neocomplcache_snippets_expand)
-
-" omni補完
-inoremap <expr><C-x><C-o> &filetype == 'vim' ? "\<C-x><C-v><C-p>" : neocomplcache#manual_omni_complete()
-
-" nerd_tree --------------------------------------------------------------------
-" カラー表示する
-let g:NERDChristmasTree  = 1
-" 隠しファイルを表示する
-let g:NERDTreeShowHidden = 1
-
-" ファイラ表示切替
-nnoremap <silent> <LEADER>f :<C-u>NERDTreeToggle<CR>
+nnoremap <LEADER>ss :<C-u>VimShell<CR>
+nnoremap <LEADER>sc :<C-u>VimShellCreate<CR>
+nnoremap <LEADER>st :<C-u>VimShellTab<CR>
 
 " unite ------------------------------------------------------------------------
 " インサートモードで起動する
@@ -302,59 +286,19 @@ nnoremap <LEADER>ug :<C-u>Unite grep -no-quit<CR><BS>**/*.
 " yank履歴
 nnoremap <LEADER>uy :<C-u>Unite history/yank<CR>
 
-" vimshell ---------------------------------------------------------------------
-" ディレクトリ補完時にスラッシュを補う
-let g:vimshell_enable_auto_slash = 1
-" 履歴数
-let g:vimshell_max_command_history = 1000
+" neocomplcache ----------------------------------------------------------------
+" TODO neocompleteに置き換え
+" 自動起動する
+let g:neocomplcache_enable_at_startup = 1
+" アンダースコア区切り補完有効
+let g:neocomplcache_enable_underbar_completion = 1
+" シンタックスキャッシュ時の最短文字列長
+let g:neocomplcache_min_syntax_length = 3
 
-nnoremap <LEADER>ss :<C-u>VimShell<CR>
-nnoremap <LEADER>sc :<C-u>VimShellCreate<CR>
-nnoremap <LEADER>st :<C-u>VimShellTab<CR>
-
-" Visual-Mark ------------------------------------------------------------------
-map <unique> <LEADER>hh <Plug>Vm_toggle_sign
-map <unique> <LEADER>hn <Plug>Vm_goto_next_sign
-map <unique> <LEADER>hp <Plug>Vm_goto_prev_sign
-
-" alignta ----------------------------------------------------------------------
-" 簡易呼び出し
-xnoremap a ::Alignta<SPACE>
-" 連想配列向け
-nnoremap <LEADER>a vi(:-1:Alignta =><CR>
-
-" syntastic --------------------------------------------------------------------
-" モード設定
-let g:syntastic_mode_map = {
-\	'mode': 'passive',
-\	'active_filetypes': ['php', 'ruby', 'javascript'],
-\	'passive_filetypes': [],
-\}
-
-" jsの構文チェックは、jslintでなくjshintを利用する
-let g:syntastic_javascript_checker = 'jshint'
-
-" 手動呼び出し
-nnoremap <LEADER>l :<C-u>SyntasticCheck<CR>
-
-" vimref -----------------------------------------------------------------------
+" vim-ref ----------------------------------------------------------------------
 " phpmanual
 let g:ref_phpmanual_path = $HOME . '/dotfiles/.vim/phpmanual/'
 nnoremap <LEADER>rp :<C-u>Ref phpmanual<SPACE>
-
-" 辞書サイト
-let g:ref_source_webdict_sites = {
-\	'je': {
-\		'url': 'http://eow.alc.co.jp/search?q=%s',
-\	},
-\}
-" デフォルトのサイト
-let g:ref_source_webdict_sites.default = 'je'
-" 出力に対するフィルタ
-function! g:ref_source_webdict_sites.je.filter(output)
-	return join(split(a:output, "\n")[40 :], "\n")
-endfunction
-nnoremap <Leader>rj :<C-u>Ref webdict je<SPACE>
 
 " quickrun ---------------------------------------------------------------------
 " 詳細設定
@@ -367,6 +311,35 @@ let g:quickrun_config = {
 \		'hook/time/enable': 1,
 \	}
 \}
+
+" nerdtree ---------------------------------------------------------------------
+" カラー表示する
+let g:NERDChristmasTree  = 1
+" 隠しファイルを表示する
+let g:NERDTreeShowHidden = 1
+
+" ファイラ表示切替
+nnoremap <silent> <LEADER>f :<C-u>NERDTreeToggle<CR>
+
+" syntastic --------------------------------------------------------------------
+" モード設定
+let g:syntastic_mode_map = {
+\	'mode': 'passive',
+\	'active_filetypes': ['php', 'ruby', 'javascript'],
+\	'passive_filetypes': [],
+\}
+
+" jsの構文チェックは、jslintでなくjshintを利用する
+let g:syntastic_javascript_checkers = ['jshint']
+
+" 手動呼び出し
+nnoremap <LEADER>l :<C-u>SyntasticCheck<CR>
+
+" alignta ----------------------------------------------------------------------
+" 簡易呼び出し
+xnoremap a ::Alignta<SPACE>
+" 連想配列向け
+nnoremap <LEADER>a vi[::Alignta =><CR>
 
 " 自作関数 =====================================================================
 " 分割画面保持バッファクローズ -------------------------------------------------
