@@ -3,6 +3,7 @@
 MAKE_LINK_LIST="
 .vim
 .vimrc
+.zshrc
 "
 
 cd $(dirname $0)
