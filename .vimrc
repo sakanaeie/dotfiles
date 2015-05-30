@@ -265,8 +265,6 @@ let g:unite_source_session_enable_auto_save = 1
 
 " grepの候補上限
 let g:unite_source_grep_max_candidates = 1000
-" grepのオプション
-let g:unite_source_grep_default_opts = '-Hni'
 
 " yank履歴有効
 let g:unite_source_history_yank_enable = 1
@@ -281,10 +279,16 @@ nnoremap <LEADER>ub :<C-u>Unite buffer -buffer-name=file<CR>
 nnoremap <LEADER>ut :<C-u>Unite tab<CR>
 " 最近使用したファイル一覧
 nnoremap <LEADER>uh :<C-u>Unite file_mru -buffer-name=file<CR>
-" grep
-nnoremap <LEADER>ug :<C-u>Unite grep -no-quit<CR><BS>**/*.
 " yank履歴
 nnoremap <LEADER>uy :<C-u>Unite history/yank<CR>
+" grep
+nnoremap <LEADER>ug :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
+nnoremap <LEADER>ur :<C-u>UniteResume search-buffer<CR>
+if executable('ag')
+	let g:unite_source_grep_command = 'ag'
+	let g:unite_source_grep_default_opts = '--nogroup --nocolor'
+	let g:unite_source_grep_recursive_opt = ''
+endif
 
 " neocomplcache ----------------------------------------------------------------
 " TODO neocompleteに置き換え
