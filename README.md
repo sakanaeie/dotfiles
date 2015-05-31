@@ -2,20 +2,20 @@
 
 ## 導入手順
 
-* 初期化
+* 初期化スクリプトを叩く
 
 ```
 ./init.sh
 ```
 
-* vim-plaginをclone
+* vim-plaginをcloneする
 
 ```
 vi
 :NeoBundleInstall
 ```
 
-* vimprocをmake
+* vimprocをmakeする
 
 ```
 cd .vim/bundle/vimproc/
@@ -28,10 +28,10 @@ make -f make_gcc.mak
 
 ### php
 
-* http://jp2.php.net/download-docs.php からリファレンスを取得
+* http://jp2.php.net/download-docs.php からリファレンスを取得する
 
 ```
-# アドレスはそのたびごとに確認
+# アドレスはそのたびごとに確認すること
 cd .vim/ref
 wget http://jp2.php.net/get/php_manual_ja.tar.gz/from/this/mirror
 tar zxvf php_manual_jp.tar.gz
@@ -48,19 +48,10 @@ mv php_functions.php tekkoc/php.snip
 
 ## プロジェクト単位での導入手順
 
-* ctagsを生成
+* ctagsを生成する
 
 ```
 ctags -R --languages=php
 ```
 
-* .gitignoreに.tagsを追記
-
-## メモ
-
-* 忘れがちなものたち
-	* ,rp # phpmanual
-	* ,t # タブ
-	* Ctrl-h/l # タブ移動
-	* ,r # quickrun
-	* ,l # syntastic
+* .gitignoreか.git/info/excludeに.tagsを追記する
