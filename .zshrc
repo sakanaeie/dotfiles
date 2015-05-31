@@ -80,6 +80,7 @@ bindkey "^S" history-incremental-pattern-search-forward
 # エイリアス -------------------------------------------------------------------
 alias vi='vim'
 alias g='git'
+alias eee='exit'
 
 if ls --color=auto >/dev/null 2>&1; then
 	alias ls='ls -F --color=auto'
