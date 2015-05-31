@@ -22,6 +22,8 @@ NeoBundle 'Shougo/unite.vim'
 " TODO neocompleteに置き換え
 NeoBundle 'Shougo/neocomplcache.vim'
 NeoBundle 'Shougo/neomru.vim'
+NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'Shougo/neosnippet-snippets'
 
 NeoBundle 'git://github.com/thinca/vim-ref.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
@@ -121,7 +123,7 @@ set cmdheight=2
 " ステータスライン位置
 set laststatus=2
 " ステータスライン表示情報
-set statusline=%F%m%r%h%w%=[%{&ff.','.(&fenc!=''?&fenc:&enc).','.&ft}]\ [%3l,%3c]\ (╹◡╹๑)
+set statusline=%F%m%r%h%w%=[%{&ff.','.(&fenc!=''?&fenc:&enc).','.&ft}]\ [%3l,%3c]\ (╹▽╹๑)
 " 広告を表示しない
 set shortmess+=I
 " スクロール時も表示が維持される行数
@@ -311,6 +313,16 @@ let g:neocomplcache_enable_underbar_completion = 1
 " シンタックスキャッシュ時の最短文字列長
 let g:neocomplcache_min_syntax_length = 3
 
+" neosnippet -------------------------------------------------------------------
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+let g:neosnippet#snippets_directory = $HOME . '/dotfiles/.vim/snippets' . ',' . $HOME . '/dotfiles/.vim/snippets/tekkoc'
+
+" neosnippets配下を利用しないファイルタイプ設定
+let g:neosnippet#disable_runtime_snippets = {
+\	'php': 1,
+\}
+
 " vim-ref ----------------------------------------------------------------------
 " phpmanual
 let g:ref_phpmanual_path = $HOME . '/dotfiles/.vim/ref/php-chunked-xhtml'
@@ -319,7 +331,7 @@ let g:ref_phpmanual_path = $HOME . '/dotfiles/.vim/ref/php-chunked-xhtml'
 let g:ref_source_webdict_sites = {
 \	'alc': {
 \		'url': 'http://eow.alc.co.jp/%s/UTF-8/',
-\	}
+\	},
 \}
 function! g:ref_source_webdict_sites.alc.filter(output)
 	return join(split(a:output, "\n")[20 :], "\n")

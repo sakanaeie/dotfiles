@@ -1,11 +1,44 @@
-snippet	func
+snippet namespace
+abbr (๑╹▽╹)ﾉnamespace
+	namespace `substitute(substitute(substitute(expand('%:h'), '\([^/]*\)/app/\(.*\)', '\\\1/\2', ''), '[^\\]*', '', ''), '/', '\', '')`;
+
+snippet __construct
+abbr (๑╹▽╹)ﾉ__construct
 	/**
-	 * ${3}
-	 *
-	 * @param		
-	 * @return		
+	 * コンストラクタ
 	 */
-	public function ${1}(${4})
+	public function __construct()
 	{
-		${5}
-	}${2}
+	}
+
+snippet doc
+abbr (๑╹▽╹)ﾉdoc
+	/**
+	 * ${1}
+	 */
+
+snippet func
+abbr (๑╹▽╹)ﾉfunc
+	/**
+	 *
+	 */
+	public function ${1}()
+	{
+	}
+
+snippet fore
+abbr (๑╹▽╹)ﾉforeach
+	foreach (${1} as $key => $row) {
+	}
+
+snippet vd
+abbr (๑╹▽╹)ﾉvar_dump
+	var_dump(${1});
+
+snippet ve
+abbr (๑╹▽╹)ﾉvar_dump&exit
+	var_dump(${1});exit();
+
+snippet this
+abbr (๑╹▽╹)ﾉthis
+	$this->
