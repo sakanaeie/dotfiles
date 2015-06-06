@@ -79,8 +79,11 @@ bindkey "^S" history-incremental-pattern-search-forward
 
 # エイリアス -------------------------------------------------------------------
 alias vi='vim'
-alias g='git'
 alias eee='exit'
+
+alias gitcommit='git commit -v'
+alias gitrebase='git rebase origin/master'
+alias gitrebasei='git rebase -i origin/master'
 
 if ls --color=auto >/dev/null 2>&1; then
 	alias ls='ls -F --color=auto'
