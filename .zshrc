@@ -24,8 +24,8 @@ zstyle ':zle:*' word-style unspecified
 autoload -Uz compinit
 compinit
 
-# 大文字小文字を区別しない
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+# 大文字小文字を区別しない (区別した状態で、補完候補があれば区別する)
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}'
 # キャッシュ
 zstyle ':completion:*' use-cache true
 # カラー化
@@ -80,10 +80,6 @@ bindkey "^S" history-incremental-pattern-search-forward
 # エイリアス -------------------------------------------------------------------
 alias vi='vim'
 alias eee='exit'
-
-alias gitcommit='git commit -v'
-alias gitrebase='git rebase origin/master'
-alias gitrebasei='git rebase -i origin/master'
 
 if ls --color=auto >/dev/null 2>&1; then
 	alias ls='ls -F --color=auto'
