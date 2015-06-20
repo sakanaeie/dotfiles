@@ -2,42 +2,42 @@
 set background=dark
 
 if exists('syntax_on')
-	hi clear
-	syntax reset
+  hi clear
+  syntax reset
 endif
 
 let colors_name = 'mycolor256'
 
 " 色辞書
 let s:color_dict = {
-	\'none':		{'c': 'NONE',	'g': 'NONE'},
-	\'black':		{'c': '0',		'g': '000000'},
-	\'red':			{'c': '9',		'g': 'ff5555'},
-	\'white':		{'c': '15',		'g': 'ffffff'},
-	\'teal_green':	{'c': '23',		'g': '005f5f'},
-	\'teal_blue':	{'c': '37',		'g': '00afaf'},
-	\'green':		{'c': '41',		'g': '00d75f'},
-	\'water':		{'c': '44',		'g': '00d7d7'},
-	\'blue':		{'c': '68',		'g': '5f87d7'},
-	\'green2':		{'c': '113',	'g': '87d787'},
-	\'water2':		{'c': '117',	'g': '87d7ff'},
-	\'water3':		{'c': '153',	'g': 'afd7ff'},
-	\'green3':		{'c': '155',	'g': 'aaff66'},
-	\'brown':		{'c': '173',	'g': 'd7875f'},
-	\'purple':		{'c': '189',	'g': 'd7d7ff'},
-	\'olive':		{'c': '190',	'g': 'd7ff87'},
-	\'red2':		{'c': '210',	'g': 'ee7777'},
-	\'pink':		{'c': '213',	'g': 'ff87ff'},
-	\'skin':		{'c': '222',	'g': 'ffd787'},
-	\'cream':		{'c': '229',	'g': 'ffffa0'},
-	\'gray_2':		{'c': '235',	'g': '262626'},
-	\'gray_3':		{'c': '236',	'g': '303030'},
-	\'gray_4':		{'c': '238',	'g': '444444'},
-	\'gray_6':		{'c': '241',	'g': '626262'},
-	\'gray_7':		{'c': '243',	'g': '767676'},
-	\'gray_9':		{'c': '246',	'g': '949494'},
-	\'gray_c':		{'c': '252',	'g': 'd0d0d0'},
-	\}
+  \ 'none':       { 'c': 'NONE', 'g': 'NONE'   },
+  \ 'black':      { 'c': '0',    'g': '000000' },
+  \ 'red':        { 'c': '9',    'g': 'ff5555' },
+  \ 'white':      { 'c': '15',   'g': 'ffffff' },
+  \ 'teal_green': { 'c': '23',   'g': '005f5f' },
+  \ 'teal_blue':  { 'c': '37',   'g': '00afaf' },
+  \ 'green':      { 'c': '41',   'g': '00d75f' },
+  \ 'water':      { 'c': '44',   'g': '00d7d7' },
+  \ 'blue':       { 'c': '68',   'g': '5f87d7' },
+  \ 'green2':     { 'c': '113',  'g': '87d787' },
+  \ 'water2':     { 'c': '117',  'g': '87d7ff' },
+  \ 'water3':     { 'c': '153',  'g': 'afd7ff' },
+  \ 'green3':     { 'c': '155',  'g': 'aaff66' },
+  \ 'brown':      { 'c': '173',  'g': 'd7875f' },
+  \ 'purple':     { 'c': '189',  'g': 'd7d7ff' },
+  \ 'olive':      { 'c': '190',  'g': 'd7ff87' },
+  \ 'red2':       { 'c': '210',  'g': 'ee7777' },
+  \ 'pink':       { 'c': '213',  'g': 'ff87ff' },
+  \ 'skin':       { 'c': '222',  'g': 'ffd787' },
+  \ 'cream':      { 'c': '229',  'g': 'ffffa0' },
+  \ 'gray_2':     { 'c': '235',  'g': '262626' },
+  \ 'gray_3':     { 'c': '236',  'g': '303030' },
+  \ 'gray_4':     { 'c': '238',  'g': '444444' },
+  \ 'gray_6':     { 'c': '241',  'g': '626262' },
+  \ 'gray_7':     { 'c': '243',  'g': '767676' },
+  \ 'gray_9':     { 'c': '246',  'g': '949494' },
+  \ 'gray_c':     { 'c': '252',  'g': 'd0d0d0' },
+\ }
 
 " 設定関数
 function! s:defineHighlightColor(target, fg, bg)

@@ -31,7 +31,7 @@ zstyle ':completion:*' use-cache true
 # カラー化
 zstyle ':completion:*' list-colors 'di=34' 'ln=35' 'so=32' 'ex=31' 'bd=46;34' 'cd=43;34'
 if [ -n "$LS_COLORS" ]; then
-	zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+  zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 fi
 # 補完候補を見やすく
 setopt list_packed
@@ -82,7 +82,7 @@ alias vi='vim'
 alias eee='exit'
 
 if ls --color=auto >/dev/null 2>&1; then
-	alias ls='ls -F --color=auto'
+  alias ls='ls -F --color=auto'
 else
-	alias ls='ls -FG'
+  alias ls='ls -FG'
 fi

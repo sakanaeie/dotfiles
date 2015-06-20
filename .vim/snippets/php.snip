@@ -1,44 +1,59 @@
 snippet namespace
 abbr (๑╹▽╹)ﾉnamespace
-	namespace `substitute(substitute(substitute(expand('%:h'), '\([^/]*\)/app/\(.*\)', '\\\1/\2', ''), '[^\\]*', '', ''), '/', '\', '')`;
+  namespace `substitute(substitute(substitute(expand('%:h'), '\([^/]*\)/app/\(.*\)', '\\\1/\2', ''), '[^\\]*', '', ''), '/', '\', '')`;
 
 snippet __construct
 abbr (๑╹▽╹)ﾉ__construct
-	/**
-	 * コンストラクタ
-	 */
-	public function __construct()
-	{
-	}
+  /**
+   * コンストラクタ
+   */
+  public function __construct()
+  {
+  }
 
 snippet doc
 abbr (๑╹▽╹)ﾉdoc
-	/**
-	 * ${1}
-	 */
+  /**
+   * ${1}
+   */
+
+snippet var
+abbr (๑╹▽╹)var
+  /**
+   * @var ${1}
+   */
 
 snippet func
 abbr (๑╹▽╹)ﾉfunc
-	/**
-	 *
-	 */
-	public function ${1}()
-	{
-	}
+  /**
+   *
+   */
+  public function ${1}()
+  {
+  }
 
-snippet fore
+snippet foreach
 abbr (๑╹▽╹)ﾉforeach
-	foreach (${1} as $key => $row) {
-	}
+  foreach (${1}) {
+  }
+
+snippet switch
+abbr (๑╹▽╹)ﾉswitch
+  switch (${1}) {
+  case ${2}:
+    break;
+  default:
+    break;
+  }
 
 snippet vd
 abbr (๑╹▽╹)ﾉvar_dump
-	var_dump(${1});
+  var_dump(${1});
 
 snippet ve
 abbr (๑╹▽╹)ﾉvar_dump&exit
-	var_dump(${1});exit();
+  var_dump(${1});exit();
 
 snippet this
 abbr (๑╹▽╹)ﾉthis
-	$this->
+  $this->
