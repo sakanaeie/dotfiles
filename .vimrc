@@ -17,10 +17,18 @@ NeoBundle 'git://github.com/Shougo/vimproc.git', {
   \ },
 \ }
 
+function! s:isMoveNeocomplete()
+  return has('lua') && (703 < v:version || (703 == v:version && has('patch885')))
+endfunction
+
+if s:isMoveNeocomplete()
+  NeoBundle 'Shougo/neocomplete.vim'
+else
+  NeoBundle 'Shougo/neocomplcache.vim'
+endif
+
 NeoBundle 'Shougo/vimshell.vim'
 NeoBundle 'Shougo/unite.vim'
-" TODO neocompleteに置き換え
-NeoBundle 'Shougo/neocomplcache.vim'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/neosnippet-snippets'
@@ -102,7 +110,7 @@ set timeoutlen=500
 augroup MyAutoCommand
   autocmd!
   " 改行時にコメントアウト記号を自動挿入しない
-"  autocmd BufNewFile,BufRead * set formatoptions-=ro
+  autocmd BufNewFile,BufRead * set formatoptions-=ro
   " 自動改行しない
   autocmd BufNewFile,BufRead * set textwidth=0
 augroup END
@@ -166,7 +174,7 @@ set tabstop=2
 " 特定の拡張子ファイルのみインデント設定を変更
 augroup MyExtensionIndent
   autocmd!
-  autocmd BufNewFile,BufRead *.php setl noexpandtab shiftwidth=4 tabstop=4
+  autocmd FileType php setl noexpandtab shiftwidth=4 tabstop=4
 augroup END
 
 " タブUI =======================================================================
@@ -328,14 +336,42 @@ endif
 " ref
 nnoremap <LEADER>rp :<C-u>Unite ref/phpmanual<CR>
 
-" neocomplcache ----------------------------------------------------------------
-" TODO neocompleteに置き換え
-" 自動起動する
-let g:neocomplcache_enable_at_startup = 1
-" アンダースコア区切り補完有効
-let g:neocomplcache_enable_underbar_completion = 1
-" シンタックスキャッシュ時の最短文字列長
-let g:neocomplcache_min_syntax_length = 3
+" neocompl(ete|cache) ----------------------------------------------------------
+if s:isMoveNeocomplete()
+  " neocomplete
+  " 自動起動する
+  let g:neocomplete#enable_at_startup = 1
+  " シンタックスキャッシュ時の最短文字列長
+  let g:neocomplete#sources#syntax#min_keyword_length = 3
+  " 大文字が入力されるまで、大文字小文字を区別しない
+  let g:neocomplete#enable_smart_case = 1
+
+  " オムニ補完有効化
+  augroup MyExtensionOmni
+    autocmd!
+    autocmd FileType css           setl omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown setl omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript    setl omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType python        setl omnifunc=pythoncomplete#Complete
+    autocmd FileType xml           setl omnifunc=xmlcomplete#CompleteTags
+  augroup END
+
+  if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+  endif
+
+  if !exists('g:neocomplete#force_omni_input_patterns')
+    let g:neocomplete#force_omni_input_patterns = {}
+  endif
+else
+  " neocomplcache
+  " 自動起動する
+  let g:neocomplcache_enable_at_startup = 1
+  " アンダースコア区切り補完有効
+  let g:neocomplcache_enable_underbar_completion = 1
+  " シンタックスキャッシュ時の最短文字列長
+  let g:neocomplcache_min_syntax_length = 3
+endif
 
 " neosnippet -------------------------------------------------------------------
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
