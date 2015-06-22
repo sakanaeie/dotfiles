@@ -427,7 +427,10 @@ let g:syntastic_mode_map = {
   \ 'passive_filetypes': [],
 \ }
 
-" jsの構文チェックは、jslintでなくjshintを利用する
+" php構文チェック ('php', 'phpcs', 'phpmd')
+let g:syntastic_php_checkers = ['php']
+
+" js構文チェック ('jslint', 'jshint')
 let g:syntastic_javascript_checkers = ['jshint']
 
 " 手動呼び出し
@@ -437,7 +440,7 @@ nnoremap <LEADER>l :<C-u>SyntasticCheck<CR>
 " 簡易呼び出し
 xnoremap a ::Alignta<SPACE>
 " php連想配列向け
-nnoremap <LEADER>a =i[vi[::Alignta =><CR>
+nnoremap <LEADER>a vi[::Alignta =><CR>=i[
 
 " 自作関数 =====================================================================
 " 分割画面保持バッファクローズ -------------------------------------------------
