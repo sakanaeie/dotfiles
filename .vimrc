@@ -174,7 +174,8 @@ set tabstop=2
 " 特定の拡張子ファイルのみインデント設定を変更
 augroup MyExtensionIndent
   autocmd!
-  autocmd FileType php setl noexpandtab shiftwidth=4 tabstop=4
+  autocmd FileType eruby setl noexpandtab shiftwidth=4 tabstop=4
+  autocmd FileType php   setl noexpandtab shiftwidth=4 tabstop=4
 augroup END
 
 " タブUI =======================================================================
@@ -287,6 +288,10 @@ cnoremap <C-b> <LEFT>
 cnoremap <C-f> <RIGHT>
 cnoremap <C-e> <END>
 cnoremap <C-a> <HOME>
+
+" Visual -----------------------------------------------------------------------
+" sortの簡易呼び出し
+xnoremap s ::sort<CR>
 
 " プラグイン ===================================================================
 " vimshell ---------------------------------------------------------------------
@@ -428,7 +433,7 @@ let g:syntastic_mode_map = {
 \ }
 
 " php構文チェック ('php', 'phpcs', 'phpmd')
-let g:syntastic_php_checkers = ['php']
+let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 
 " js構文チェック ('jslint', 'jshint')
 let g:syntastic_javascript_checkers = ['jshint']
