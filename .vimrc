@@ -273,6 +273,9 @@ nnoremap <BS> <C-t>
 " ペーストモード切り替え
 set pastetoggle=<F12>
 
+" 段落をソートする
+nnoremap <LEADER>s vip::sort<CR>
+
 " Insert -----------------------------------------------------------------------
 inoremap jj <ESC>
 inoremap jk <ESC>
@@ -288,10 +291,6 @@ cnoremap <C-b> <LEFT>
 cnoremap <C-f> <RIGHT>
 cnoremap <C-e> <END>
 cnoremap <C-a> <HOME>
-
-" Visual -----------------------------------------------------------------------
-" sortの簡易呼び出し
-xnoremap s ::sort<CR>
 
 " プラグイン ===================================================================
 " vimshell ---------------------------------------------------------------------
@@ -313,7 +312,7 @@ let g:unite_source_file_mru_limit = 1000
 let g:unite_source_session_enable_auto_save = 1
 
 " grepの候補上限
-let g:unite_source_grep_max_candidates = 100
+let g:unite_source_grep_max_candidates = 200
 
 " yank履歴有効
 let g:unite_source_history_yank_enable = 1
