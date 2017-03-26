@@ -1,45 +1,40 @@
-" 初期化 =======================================================================
-" vi互換にしない
-set nocompatible
-
-" neobundleの設定 ==============================================================
-filetype plugin indent off
-if has('vim_starting')
-  set runtimepath+=~/.vim/neobundle.vim/
-  call neobundle#rc(expand('~/.vim/bundle/'))
+" deinの設定 ===================================================================
+if &compatible
+  set nocompatible
 endif
+
+set s:dein_dir  = $XDG_CACHE_HOME . '/dein'
+set s:dein_path = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+
+set runtimepath+=s:dein_path
+
+if dein#load_state(s:dein_dir)
+  call dein#begin(s:dein_dir)
+
+  call dein#add(s:dein_path)
+
+  call dein#add('Shougo/denite.nvim')
+  call dein#add('Shougo/deoplete.nvim')
+  call dein#add('Shougo/neomru.vim')
+  call dein#add('Shougo/neosnippet.vim')
+  call dein#add('Shougo/neosnippet-snippets')
+  call dein#add('Shougo/neoyank.vim')
+
+  call dein#add('scrooloose/nerdtree.git')
+  call dein#add('scrooloose/syntastic.git')
+
+  call dein#add('h1mesuke/vim-alignta.git')
+
+  call dein#end()
+  call dein#save_state()
+endif
+
 filetype plugin indent on
+syntax enable
 
-NeoBundle 'git://github.com/Shougo/vimproc.git', {
-  \ 'build': {
-    \ 'mac':  'make -f make_mac.mak',
-    \ 'unix': 'make -f make_unix.mak',
-  \ },
-\ }
-
-function! s:isMoveNeocomplete()
-  return has('lua') && (703 < v:version || (703 == v:version && has('patch885')))
-endfunction
-
-if s:isMoveNeocomplete()
-  NeoBundle 'Shougo/neocomplete.vim'
-else
-  NeoBundle 'Shougo/neocomplcache.vim'
+if dein#check_install()
+  call dein#install()
 endif
-
-NeoBundle 'Shougo/vimshell.vim'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'Shougo/neosnippet-snippets'
-
-NeoBundle 'git://github.com/thinca/vim-ref.git'
-NeoBundle 'git://github.com/thinca/vim-quickrun.git'
-
-NeoBundle 'git://github.com/scrooloose/nerdtree.git'
-NeoBundle 'git://github.com/scrooloose/syntastic.git'
-
-NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 
 " ファイル属性 =================================================================
 " 文字エンコード
@@ -63,13 +58,6 @@ augroup END
 " 不可視文字の表示
 set list
 set listchars=tab:\|.,trail:_,extends:<,precedes:>
-
-" ターミナルのカラー化
-if has('unix')
-  set ttytype=builtin_linux
-  set term=builtin_linux
-  set t_Co=256
-endif
 
 " カラースキーマ
 colorscheme mycolor256
@@ -293,126 +281,40 @@ cnoremap <C-e> <END>
 cnoremap <C-a> <HOME>
 
 " プラグイン ===================================================================
-" vimshell ---------------------------------------------------------------------
-" ディレクトリ補完時にスラッシュを補う
-let g:vimshell_enable_auto_slash = 1
-" 履歴数
-let g:vimshell_max_command_history = 1000
-
-nnoremap <LEADER>ss :<C-u>VimShell<CR>
-nnoremap <LEADER>sc :<C-u>VimShellCreate<CR>
-nnoremap <LEADER>st :<C-u>VimShellTab<CR>
-
-" unite ------------------------------------------------------------------------
-" インサートモードで起動する
-let g:unite_enable_start_insert = 1
-" 最近使用したファイルの記憶上限
-let g:unite_source_file_mru_limit = 1000
-" セッション保存
-let g:unite_source_session_enable_auto_save = 1
-
-" grepの候補上限
-let g:unite_source_grep_max_candidates = 200
-
-" yank履歴有効
-let g:unite_source_history_yank_enable = 1
-" yank履歴の記憶上限
-let g:unite_source_history_yank_limit = 100
-
+" denite -----------------------------------------------------------------------
 " ファイル一覧 (vim起動ディレクトリから)
-nnoremap <LEADER>uu :<C-u>Unite file_rec/async -buffer-name=file<CR>
+nnoremap <LEADER>uu :<C-u>Denite file_rec<CR>
 " バッファ一覧
-nnoremap <LEADER>ub :<C-u>Unite buffer -buffer-name=file<CR>
+nnoremap <LEADER>ub :<C-u>Denite buffer<CR>
 " タブ一覧
-nnoremap <LEADER>ut :<C-u>Unite tab<CR>
+nnoremap <LEADER>ut :<C-u>Denite tab<CR>
 " 最近使用したファイル一覧
-nnoremap <LEADER>uh :<C-u>Unite file_mru -buffer-name=file<CR>
+nnoremap <LEADER>uh :<C-u>Denite file_mru<CR>
 " yank履歴
-nnoremap <LEADER>uy :<C-u>Unite history/yank<CR>
+nnoremap <LEADER>uy :<C-u>Denite neoyank<CR>
 " grep
-nnoremap <LEADER>ug :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
-nnoremap <LEADER>ur :<C-u>UniteResume search-buffer<CR>
-if executable('ag')
-  let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '--nogroup --nocolor'
-  let g:unite_source_grep_recursive_opt = ''
-endif
-" ref
-nnoremap <LEADER>rp :<C-u>Unite ref/phpmanual<CR>
+nnoremap <LEADER>ug :<C-u>Denite grep -buffer-name=search-buffer-denite<CR>
+nnoremap <LEADER>ur :<C-u>Denite -resume -buffer-name=search-buffer-denite<CR>
+nnoremap <LEADER>un :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=+1 -immediately<CR>
+call denite#custom#var('file_rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+call denite#custom#var('grep', 'command', ['ag'])
+call denite#custom#var('grep', 'recursive_opts', [])
+call denite#custom#var('grep', 'pattern_opt', [])
+call denite#custom#var('grep', 'default_opts', ['--follow', '--no-group', '--no-color'])
 
-" neocompl(ete|cache) ----------------------------------------------------------
-if s:isMoveNeocomplete()
-  " neocomplete
-  " 自動起動する
-  let g:neocomplete#enable_at_startup = 1
-  " シンタックスキャッシュ時の最短文字列長
-  let g:neocomplete#sources#syntax#min_keyword_length = 3
-  " 大文字が入力されるまで、大文字小文字を区別しない
-  let g:neocomplete#enable_smart_case = 1
-
-  " オムニ補完有効化
-  augroup MyExtensionOmni
-    autocmd!
-    autocmd FileType css           setl omnifunc=csscomplete#CompleteCSS
-    autocmd FileType html,markdown setl omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType javascript    setl omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType python        setl omnifunc=pythoncomplete#Complete
-    autocmd FileType xml           setl omnifunc=xmlcomplete#CompleteTags
-  augroup END
-
-  if !exists('g:neocomplete#sources#omni#input_patterns')
-    let g:neocomplete#sources#omni#input_patterns = {}
-  endif
-
-  if !exists('g:neocomplete#force_omni_input_patterns')
-    let g:neocomplete#force_omni_input_patterns = {}
-  endif
-else
-  " neocomplcache
-  " 自動起動する
-  let g:neocomplcache_enable_at_startup = 1
-  " アンダースコア区切り補完有効
-  let g:neocomplcache_enable_underbar_completion = 1
-  " シンタックスキャッシュ時の最短文字列長
-  let g:neocomplcache_min_syntax_length = 3
-endif
+" deoplete ---------------------------------------------------------------------
+" 自動起動する
+let g:deoplete#enable_at_startup = 1
+" 大文字が入力されるまで、大文字小文字を区別しない
+let g:deoplete#enable_smart_case = 1
+" 補完時の最短文字列長
+let g:min_pattern_length = 3
+" TODO omniの設定
 
 " neosnippet -------------------------------------------------------------------
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
-let g:neosnippet#snippets_directory = $HOME . '/dotfiles/.vim/snippets' . ',' . $HOME . '/dotfiles/.vim/snippets/tekkoc'
-
-" neosnippets配下を利用しないファイルタイプ設定
-let g:neosnippet#disable_runtime_snippets = {
-  \ 'php': 1,
-\ }
-
-" vim-ref ----------------------------------------------------------------------
-" phpmanual
-let g:ref_phpmanual_path = $HOME . '/dotfiles/.vim/ref/php-chunked-xhtml'
-
-" alc
-let g:ref_source_webdict_sites = {
-  \ 'alc': {
-    \ 'url': 'http://eow.alc.co.jp/%s/UTF-8/',
-  \ },
-\ }
-function! g:ref_source_webdict_sites.alc.filter(output)
-  return join(split(a:output, "\n")[20 :], "\n")
-endfunction
-nnoremap <LEADER>ra :Ref webdict alc<SPACE>
-
-" quickrun ---------------------------------------------------------------------
-" 詳細設定
-let g:quickrun_config = {
-  \ '_': {
-    \ 'runner': 'vimproc',
-    \ 'runner/vimproc/updatetime': 10,
-    \ 'outputter/buffer/split': ':botright',
-    \ 'outputter/buffer/close_on_empty': 1,
-    \ 'hook/time/enable': 1,
-  \ },
-\ }
+let g:neosnippet#snippets_directory = $HOME . '/dotfiles/.vim/snippets'
 
 " nerdtree ---------------------------------------------------------------------
 " カラー表示する

@@ -1,4 +1,2 @@
-.vim/bundle/
-.vim/ref/
+.vim/init.vim
 .vim/swap/
-.vim/snippets/*/*

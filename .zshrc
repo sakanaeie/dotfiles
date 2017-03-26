@@ -1,6 +1,8 @@
 # 環境変数 ---------------------------------------------------------------------
 export LANG=ja_JP.UTF-8
 export EDITOR=vim
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_CONFIG_HOME=$HOME/.config
 
 # プロンプト -------------------------------------------------------------------
 autoload -Uz vcs_info
