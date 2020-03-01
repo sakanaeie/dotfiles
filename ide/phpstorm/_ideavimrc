@@ -1,0 +1,134 @@
+" 初期化 =======================================================================
+" vi互換にしない
+set nocompatible
+
+" 可視化 =======================================================================
+" 不可視文字の表示
+"set list
+"set listchars=tab:\|.,trail:_,extends:<,precedes:>
+
+" 操作性 =======================================================================
+" [%]で移動する対応括弧
+set matchpairs=(:),{:},[:],<:>
+" カーソルを行頭末で停止させない
+"set whichwrap=h,l
+" クリップボードにヤンク
+set clipboard+=unnamed
+
+" 表示 =========================================================================
+" ステータスライン位置
+"set laststatus=2
+" ステータスライン表示情報
+"set statusline=%F%m%r%h%w%=[%{&ff.','.(&fenc!=''?&fenc:&enc).','.&ft}]\ [%3l,%3c]
+" スクロール時も表示が維持される行数
+set scrolloff=2
+" コマンドを表示する
+"set showcmd
+" 対応括弧を表示する
+set showmatch
+" モードを表示する
+set showmode
+
+" 検索 =========================================================================
+" コマンドと検索パターンの履歴数
+set history=1000
+" 大小文字を区別しない
+set ignorecase
+" 小文字で検索した時のみ大小文字を区別しない
+set smartcase
+" インクリメンタルサーチ有効
+set incsearch
+" 検索結果ハイライト有効
+set hlsearch
+" 検索を循環させない
+set nowrapscan
+
+" インデント ===================================================================
+" タブを使用する
+set noexpandtab
+" タブが対応する半角文字数
+set tabstop=4
+" オートインデント有効
+set autoindent
+" 高度なオートインデント有効
+set smartindent
+
+" キーマッピング ===============================================================
+" Normal -----------------------------------------------------------------------
+" [,]を<LEADER>にする
+let mapleader = ','
+
+" [;]と[:]を入れ替える
+nnoremap ; :
+nnoremap : ;
+
+" 表示行単位移動
+nnoremap j gj
+nnoremap k gk
+
+" カーソル画面中央固定移動
+nnoremap <S-j> gjzz
+nnoremap <S-k> gkzz
+
+" 行頭行末
+nnoremap <C-a> 0
+nnoremap <C-e> $
+
+" 画面分割
+nnoremap <LEADER>v :<C-u>vsp<CR>
+
+" 分割画面間移動
+nnoremap sh <C-w>h
+nnoremap sj <C-w>j
+nnoremap sk <C-w>k
+nnoremap sl <C-w>l
+
+" タブ移動
+nnoremap <C-h> gT
+nnoremap <C-l> gt
+
+" タブを閉じる
+nnoremap sd :<C-u>q<CR>
+
+" 検索結果ハイライトを消す
+nnoremap <C-[><C-[> :<C-u>noh<CR>
+
+" 段落をソートする
+nnoremap <LEADER>s vip::sort<CR>
+
+" タグジャンプ
+nnoremap <RETURN> :<C-u>action GotoDeclaration<CR>
+
+" コード整形
+nnoremap <LEADER>a :<C-u>action ReformatCode<CR>
+
+" Insert -----------------------------------------------------------------------
+inoremap jj <ESC>
+inoremap <C-b> <LEFT>
+inoremap <C-f> <RIGHT>
+inoremap <C-e> <END>
+inoremap <C-a> <HOME>
+
+" 補完
+" inoremap <C-SPACE> :<C-u>action SmartTypeCompletion<CR>
+
+" Command ----------------------------------------------------------------------
+cnoremap <C-b> <LEFT>
+cnoremap <C-f> <RIGHT>
+cnoremap <C-e> <END>
+cnoremap <C-a> <HOME>
+
+" UniteLike --------------------------------------------------------------------
+" ファイル一覧
+nnoremap <LEADER>uu :<C-u>action SearchEverywhere<CR>
+" 最近使用したファイル
+nnoremap <LEADER>ub :<C-u>action RecentFiles<CR>
+nnoremap <LEADER>uh :<C-u>action RecentFiles<CR>
+" 最近編集したファイル
+nnoremap <LEADER>uc :<C-u>action RecentChangedFiles<CR>
+" カーソル上のワードの使用箇所検索
+nnoremap <LEADER>us :<C-u>action FindUsages<CR>
+nnoremap <LEADER>usi :<C-u>action FindUsagesInFile<CR>
+" 全体検索
+nnoremap <LEADER>ug :<C-u>action FindInPath<CR>
+nnoremap <LEADER>ur :<C-u>action FindInPath<CR>

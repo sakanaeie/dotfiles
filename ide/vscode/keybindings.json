@@ -1,0 +1,28 @@
+[
+    // vim insert mode
+    {
+        "key": "ctrl+i",
+        "command": "tab",
+        "when": "editorTextFocus && vim.active && vim.use<C-i> && !inDebugRepl && vim.mode == 'Insert'"
+    },
+    {
+        "key": "ctrl+b",
+        "command": "cursorLeft",
+        "when": "editorTextFocus && vim.active && vim.use<C-b> && !inDebugRepl && vim.mode == 'Insert'"
+    },
+    {
+        "key": "ctrl+f",
+        "command": "cursorRight",
+        "when": "editorTextFocus && vim.active && vim.use<C-f> && !inDebugRepl && vim.mode == 'Insert'"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "cursorEnd",
+        "when": "editorTextFocus && vim.active && vim.use<C-e> && !inDebugRepl && vim.mode == 'Insert'"
+    },
+    {
+        "key": "ctrl+a",
+        "command": "cursorHome",
+        "when": "editorTextFocus && vim.active && vim.use<C-a> && !inDebugRepl && vim.mode == 'Insert'"
+    }
+]
