@@ -1,295 +1,324 @@
 {
-     // terminal
-    "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
-    "terminal.integrated.copyOnSelection": true, // クリップボード共有
+  // terminal
+  "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
+  "terminal.integrated.copyOnSelection": true, // クリップボード共有
 
-    // font
-    "editor.fontSize": 14,
-    "terminal.integrated.fontSize": 14,
-    "editor.fontFamily": "Migu 1M",
-    "terminal.integrated.fontFamily": "Migu 1M",
+  // font
+  "editor.fontSize": 13,
+  "terminal.integrated.fontSize": 13,
+  "editor.fontFamily": "Migu 1M",
+  "terminal.integrated.fontFamily": "Migu 1M",
 
-    // wrap
-    "editor.wordWrap": "on",
-    "editor.wrappingIndent": "none",      // 折り返し行をインデントしない
-    "files.trimTrailingWhitespace": true, // 行末のスペースを消す
-    "[markdown]": {
-        "files.trimTrailingWhitespace": false
+  // wrap
+  "editor.wordWrap": "on",
+  "editor.wrappingIndent": "none",      // 折り返し行をインデントしない
+  "files.trimTrailingWhitespace": true, // 行末のスペースを消す
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false
+  },
+
+  // indent
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false, // ファイルからのインデント設定自動検知を無効にする
+  "[php]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false
+  },
+
+  // file
+  "files.insertFinalNewline": true,
+  "workbench.editor.enablePreview": false, // プレビューしない (ファイルを開くとき、新しいタブで開く)
+
+  // visibility
+  "editor.renderWhitespace": "boundary", // 単語間の単一スペースは表示しない
+  "editor.minimap.enabled": false,
+  "workbench.tree.indent": 10,
+  "workbench.iconTheme": "material-icon-theme",
+
+  // color
+//  "workbench.colorTheme": "Dark+", // default
+  "workbench.colorCustomizations": {
+    "editorIndentGuide.activeBackground": "#fff2", // アクティブであるインデントガイドを薄くする
+    "editorIndentGuide.background":       "#0000", // アクティブでないインデントガイドを消す
+    "editor.lineHighlightBorder":         "#0000", // カーソル位置行のハイライトを消す
+    "editorBracketMatch.border":          "#fff4", // 対応カッコのハイライトを薄くする
+  },
+
+  // suggestion
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  "editor.tabCompletion": "on",
+  "editor.snippetSuggestions": "top",
+
+  // emmet
+  "emmet.triggerExpansionOnTab": true,
+
+  // js
+  "javascript.updateImportsOnFileMove.enabled": "always",
+
+  // vim
+  "vim.leader": ",",
+  "vim.wrapscan": false,
+  "vim.hlsearch": true,   // 検索のハイライト
+  "vim.easymotion": true,
+  "vim.sneak": true,
+  "vim.whichwrap": "h,l", // カーソルを行頭行末で停止させない
+  "vim.useSystemClipboard": true,
+  "vim.normalModeKeyBindingsNonRecursive": [
+    // ; を : にする
+    {
+      "before": [";"],
+      "after": [":"]
     },
-
-    // file
-    "files.insertFinalNewline": true,
-
-    // visibility
-    "workbench.colorTheme": "Monokai",
-    "editor.renderWhitespace": "boundary", // 単語間の単一スペースは表示しない
-    "editor.minimap.enabled": false,
-    "workbench.tree.indent": 20,
-    "workbench.iconTheme": "material-icon-theme",
-
-    // suggestion
-    "editor.quickSuggestions": {
-        "other": true,
-        "comments": true,
-        "strings": true
+    {
+      "before": [":"],
+      "after": [";"]
     },
-    "editor.tabCompletion": "on",
-    "editor.snippetSuggestions": "top",
-
-    // emmet
-    "emmet.triggerExpansionOnTab": true,
-
-    // js
-    "javascript.updateImportsOnFileMove.enabled": "always",
-
-    // vim
-    "vim.leader": ",",
-    "vim.hlsearch": true,   // 検索のハイライト
-    "vim.easymotion": true,
-    "vim.sneak": true,
-    "vim.whichwrap": "h,l", // カーソルを行頭行末で停止させない
-    "vim.useSystemClipboard": true,
-    "vim.normalModeKeyBindingsNonRecursive": [
-        // ; を : にする
-        {
-            "before": [";"],
-            "after": [":"]
-        },
-        {
-            "before": [":"],
-            "after": [";"]
-        },
-        // 表示行単位移動
-        {
-            "before": ["j"],
-            "after": ["g", "j"]
-        },
-        {
-            "before": ["k"],
-            "after": ["g", "k"]
-        },
-        // カーソル画面中央固定移動
-        {
-            "before": ["J"],
-            "after": ["g", "j", "z", "z"]
-        },
-        {
-            "before": ["K"],
-            "after": ["g", "k", "z", "z"]
-        },
-        // 行頭行末
-        {
-            "before": ["<C-a>"],
-            "after": ["0"]
-        },
-        {
-            "before": ["<C-e>"],
-            "after": ["$"]
-        },
-        // 画面分割
-        {
-            "before": ["<LEADER>", "v"],
-            "commands": [":vsp"]
-        },
-        // 分割画面間移動
-        {
-            "before": ["s", "h"],
-            "after": ["<C-w>", "h"]
-        },
-        {
-            "before": ["s", "j"],
-            "after": ["<C-w>", "j"]
-        },
-        {
-            "before": ["s", "k"],
-            "after": ["<C-w>", "k"]
-        },
-        {
-            "before": ["s", "l"],
-            "after": ["<C-w>", "l"]
-        },
-        // タブ移動
-        {
-            "before": ["<C-h>"],
-            "after": ["g", "T"]
-        },
-        {
-            "before": ["<C-l>"],
-            "after": ["g", "t"]
-        },
-        // タブを閉じる
-        {
-            "before": ["s", "d"],
-            "commands": [":q"]
-        },
-        // 検索結果ハイライトを消す
-        {
-            "before": ["<C-[>"],
-            "commands": [":noh"]
-        },
-        // 段落をソート
-        {
-            "before": ["<LEADER>", "s"],
-            "after": ["v", "i", "p", ":", "s", "o", "r", "t", "<CR>"]
-        },
-        // easymotion 2文字
-        {
-            "before": ["s", "s"],
-            "after": ["<LEADER>", "<LEADER>", "2", "s", "<CHAR>", "<CHAR>"]
-        },
-        // ファイル検索
-        {
-            "before": ["<LEADER>", "u", "u"],
-            "commands": ["workbench.action.quickOpen"]
-        },
-        // 最近使用したファイル
-        {
-            "before": ["<LEADER>", "u", "h"],
-            "commands": ["workbench.action.quickOpenRecent"]
-        },
-        // ワード検索
-        {
-            "before": ["<LEADER>", "u", "g"],
-            "commands": ["workbench.action.findInFiles"]
-        },
-        // マルチカーソル
-        {
-            "before": ["<C-k>"],
-            "after": ["g", "b"]
-        }
-    ],
-    "vim.visualModeKeyBindingsNonRecursive": [
-        // マルチカーソル
-        {
-            "before": ["<C-k>"],
-            "after": ["g", "b"]
-        }
-    ],
-    "vim.insertModeKeyBindingsNonRecursive": [
-        // jj
-        {
-            "before": ["j", "j"],
-            "after": ["<ESC>"]
-        }
-    ],
-
-    // vim.easymotion
-    "vim.easymotionMarkerBackgroundColor": "rgba(0, 0, 0, 0.5)",
-    "vim.easymotionMarkerWidthPerChar": 14,
-    "vim.easymotionMarkerHeight": 24,
-    "vim.easymotionMarkerFontSize": "24",
-
-    // no italic
-    "editor.tokenColorCustomizations": {
-        "textMateRules": [
-            {
-                "scope": [
-                    "comment",
-                    "comment.block",
-                    "comment.block.documentation",
-                    "comment.line",
-                    "constant",
-                    "constant.character",
-                    "constant.character.escape",
-                    "constant.numeric",
-                    "constant.numeric.integer",
-                    "constant.numeric.float",
-                    "constant.numeric.hex",
-                    "constant.numeric.octal",
-                    "constant.other",
-                    "constant.regexp",
-                    "constant.rgb-value",
-                    "emphasis",
-                    "entity",
-                    "entity.name",
-                    "entity.name.class",
-                    "entity.name.function",
-                    "entity.name.method",
-                    "entity.name.section",
-                    "entity.name.selector",
-                    "entity.name.tag",
-                    "entity.name.type",
-                    "entity.other",
-                    "entity.other.attribute-name",
-                    "entity.other.inherited-class",
-                    "invalid",
-                    "invalid.deprecated",
-                    "invalid.illegal",
-                    "keyword",
-                    "keyword.control",
-                    "keyword.operator",
-                    "keyword.operator.new",
-                    "keyword.operator.assignment",
-                    "keyword.operator.arithmetic",
-                    "keyword.operator.logical",
-                    "keyword.other",
-                    "markup",
-                    "markup.bold",
-                    "markup.changed",
-                    "markup.deleted",
-                    "markup.heading",
-                    "markup.inline.raw",
-                    "markup.inserted",
-                    "markup.italic",
-                    "markup.list",
-                    "markup.list.numbered",
-                    "markup.list.unnumbered",
-                    "markup.other",
-                    "markup.quote",
-                    "markup.raw",
-                    "markup.underline",
-                    "markup.underline.link",
-                    "meta",
-                    "meta.block",
-                    "meta.cast",
-                    "meta.class",
-                    "meta.function",
-                    "meta.function-call",
-                    "meta.import",
-                    "meta.preprocessor",
-                    "meta.return-type",
-                    "meta.selector",
-                    "meta.tag",
-                    "meta.type.annotation",
-                    "meta.type",
-                    "punctuation.definition.string.begin",
-                    "punctuation.definition.string.end",
-                    "punctuation.separator",
-                    "punctuation.separator.continuation",
-                    "punctuation.terminator",
-                    "storage",
-                    "storage.modifier",
-                    "storage.type",
-                    "string",
-                    "string.interpolated",
-                    "string.other",
-                    "string.quoted",
-                    "string.quoted.double",
-                    "string.quoted.other",
-                    "string.quoted.single",
-                    "string.quoted.triple",
-                    "string.regexp",
-                    "string.unquoted",
-                    "strong",
-                    "support",
-                    "support.class",
-                    "support.constant",
-                    "support.function",
-                    "support.other",
-                    "support.type",
-                    "support.type.property-name",
-                    "support.variable",
-                    "variable",
-                    "variable.language",
-                    "variable.name",
-                    "variable.other",
-                    "variable.other.readwrite",
-                    "variable.parameter"
-                ],
-                "settings": {
-                    "fontStyle": ""
-                }
-            }
-        ]
+    // 表示行単位移動
+    {
+      "before": ["j"],
+      "after": ["g", "j"]
+    },
+    {
+      "before": ["k"],
+      "after": ["g", "k"]
+    },
+    // カーソル画面中央固定移動
+    {
+      "before": ["J"],
+      "after": ["g", "j", "z", "z"]
+    },
+    {
+      "before": ["K"],
+      "after": ["g", "k", "z", "z"]
+    },
+    // 行頭行末
+    {
+      "before": ["<C-a>"],
+      "after": ["0"]
+    },
+    {
+      "before": ["<C-e>"],
+      "after": ["$"]
+    },
+    // 画面分割
+    {
+      "before": ["<LEADER>", "v"],
+      "commands": [":vsp"]
+    },
+    // 分割画面間移動
+    {
+      "before": ["s", "h"],
+      "after": ["<C-w>", "h"]
+    },
+    {
+      "before": ["s", "j"],
+      "after": ["<C-w>", "j"]
+    },
+    {
+      "before": ["s", "k"],
+      "after": ["<C-w>", "k"]
+    },
+    {
+      "before": ["s", "l"],
+      "after": ["<C-w>", "l"]
+    },
+    // タブ移動
+    {
+      "before": ["<C-h>"],
+      "after": ["g", "T"]
+    },
+    {
+      "before": ["<C-l>"],
+      "after": ["g", "t"]
+    },
+    // タブを閉じる
+    {
+      "before": ["s", "d"],
+      "commands": [":q"]
+    },
+    // 検索結果ハイライトを消す
+    {
+      "before": ["<C-[>"],
+      "commands": [":noh"]
+    },
+    // サイドバーをトグル
+    {
+      "before": ["<LEADER>", "f"],
+      "commands": ["workbench.action.toggleSidebarVisibility"]
+    },
+    // 段落をソート
+    {
+      "before": ["<LEADER>", "s"],
+      "after": ["v", "i", "p", ":", "s", "o", "r", "t", "<CR>"]
+    },
+    // easymotion 2文字
+    {
+      "before": ["s", "s"],
+      "after": ["<LEADER>", "<LEADER>", "2", "s", "<CHAR>", "<CHAR>"]
+    },
+    // ファイル検索
+    {
+      "before": ["<LEADER>", "u", "u"],
+      "commands": ["workbench.action.quickOpen"]
+    },
+    // 最近使用したファイル
+    {
+      "before": ["<LEADER>", "u", "h"],
+      "commands": ["workbench.action.quickOpen"]
+    },
+    // ワード検索
+    {
+      "before": ["<LEADER>", "u", "g"],
+      "commands": ["workbench.action.findInFiles"]
+    },
+    // マルチカーソル
+    {
+      "before": ["<C-k>"],
+      "after": ["g", "b"]
+    },
+    // タグジャンプ
+    {
+      "before": ["<ENTER>"],
+      "commands": ["editor.action.revealDefinition"]
     }
+  ],
+  "vim.visualModeKeyBindingsNonRecursive": [
+    // マルチカーソル
+    {
+      "before": ["<C-k>"],
+      "after": ["g", "b"]
+    }
+  ],
+  "vim.insertModeKeyBindingsNonRecursive": [
+    // jj
+    {
+      "before": ["j", "j"],
+      "after": ["<ESC>"]
+    }
+  ],
+
+  // vim.easymotion
+  "vim.easymotionMarkerBackgroundColor": "rgba(0, 0, 0, 0.5)",
+  "vim.easymotionMarkerWidthPerChar": 14,
+  "vim.easymotionMarkerHeight": 24,
+  "vim.easymotionMarkerFontSize": "24",
+
+  // no italic
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": [
+          "comment",
+          "comment.block",
+          "comment.block.documentation",
+          "comment.line",
+          "constant",
+          "constant.character",
+          "constant.character.escape",
+          "constant.numeric",
+          "constant.numeric.integer",
+          "constant.numeric.float",
+          "constant.numeric.hex",
+          "constant.numeric.octal",
+          "constant.other",
+          "constant.regexp",
+          "constant.rgb-value",
+          "emphasis",
+          "entity",
+          "entity.name",
+          "entity.name.class",
+          "entity.name.function",
+          "entity.name.method",
+          "entity.name.section",
+          "entity.name.selector",
+          "entity.name.tag",
+          "entity.name.type",
+          "entity.other",
+          "entity.other.attribute-name",
+          "entity.other.inherited-class",
+          "invalid",
+          "invalid.deprecated",
+          "invalid.illegal",
+          "keyword",
+          "keyword.control",
+          "keyword.operator",
+          "keyword.operator.new",
+          "keyword.operator.assignment",
+          "keyword.operator.arithmetic",
+          "keyword.operator.logical",
+          "keyword.other",
+          "markup",
+          "markup.bold",
+          "markup.changed",
+          "markup.deleted",
+          "markup.heading",
+          "markup.inline.raw",
+          "markup.inserted",
+          "markup.italic",
+          "markup.list",
+          "markup.list.numbered",
+          "markup.list.unnumbered",
+          "markup.other",
+          "markup.quote",
+          "markup.raw",
+          "markup.underline",
+          "markup.underline.link",
+          "meta",
+          "meta.block",
+          "meta.cast",
+          "meta.class",
+          "meta.function",
+          "meta.function-call",
+          "meta.import",
+          "meta.preprocessor",
+          "meta.return-type",
+          "meta.selector",
+          "meta.tag",
+          "meta.type.annotation",
+          "meta.type",
+          "punctuation.definition.string.begin",
+          "punctuation.definition.string.end",
+          "punctuation.separator",
+          "punctuation.separator.continuation",
+          "punctuation.terminator",
+          "storage",
+          "storage.modifier",
+          "storage.type",
+          "string",
+          "string.interpolated",
+          "string.other",
+          "string.quoted",
+          "string.quoted.double",
+          "string.quoted.other",
+          "string.quoted.single",
+          "string.quoted.triple",
+          "string.regexp",
+          "string.unquoted",
+          "strong",
+          "support",
+          "support.class",
+          "support.constant",
+          "support.function",
+          "support.other",
+          "support.type",
+          "support.type.property-name",
+          "support.variable",
+          "variable",
+          "variable.language",
+          "variable.name",
+          "variable.other",
+          "variable.other.readwrite",
+          "variable.parameter"
+        ],
+        "settings": {
+          "fontStyle": ""
+        }
+      }
+    ]
+  }
 }
