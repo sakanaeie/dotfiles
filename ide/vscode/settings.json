@@ -1,9 +1,30 @@
 {
-  // terminal
-  "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
-  "terminal.integrated.copyOnSelection": true, // クリップボード共有
+  // remote
+  "remote.SSH.configFile": "C:\\Users\\<<<<USERNAME>>>>\\.ssh\\config",
+  "remote.SSH.useLocalServer": false,
+  "remote.SSH.remotePlatform": {
+    "peace-vagrant": "linux"
+  },
+  "remote.SSH.path": "C:\\Program Files\\Git\\usr\\bin\\ssh.exe",
 
-  // font
+  // https://code.visualstudio.com/docs/setup/linux#_visual-studio-code-is-unable-to-watch-for-file-changes-in-this-large-workspace-error-enospc
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/bower_components": true
+  },
+
+  // search
+  "search.useIgnoreFiles": false,
+  "search.exclude": {
+    "**/*.log": true,
+    "**/vendor/**": false
+  },
+
+  // terminal
+  "terminal.integrated.copyOnSelection": true, // クリップボード共有
+  "terminal.integrated.defaultLocation": "editor",
   "editor.fontSize": 13,
   "terminal.integrated.fontSize": 13,
   "editor.fontFamily": "Migu 1M",
@@ -21,20 +42,30 @@
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.detectIndentation": false, // ファイルからのインデント設定自動検知を無効にする
-  "[php]": {
+  "[php]": { // 業務用
     "editor.tabSize": 4,
-    "editor.insertSpaces": false
+    "editor.insertSpaces": false,
+    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+  },
+  "[html]": { // 業務用
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
   },
 
   // file
+  "files.encoding": "utf8",
   "files.insertFinalNewline": true,
   "workbench.editor.enablePreview": false, // プレビューしない (ファイルを開くとき、新しいタブで開く)
+  "workbench.iconTheme": "material-icon-theme",
+  "files.associations": {
+    "*.tpl": "html"
+  },
 
   // visibility
-  "editor.renderWhitespace": "boundary", // 単語間の単一スペースは表示しない
+  "editor.renderWhitespace": "boundary", // 単語間の単一スペースは可視化しない
   "editor.minimap.enabled": false,
+  "editor.stickyScroll.enabled": false,
   "workbench.tree.indent": 10,
-  "workbench.iconTheme": "material-icon-theme",
 
   // color
 //  "workbench.colorTheme": "Dark+", // default
@@ -54,11 +85,48 @@
   "editor.tabCompletion": "on",
   "editor.snippetSuggestions": "top",
 
+  // save
+  "editor.codeActionsOnSave": [],
+
+  // git
+  "git.ignoreLegacyWarning": true,
+  "git.openRepositoryInParentFolders": "never",
+
   // emmet
   "emmet.triggerExpansionOnTab": true,
 
   // js
   "javascript.updateImportsOnFileMove.enabled": "always",
+
+  // extentions
+  "phpcs.standard": "phpcs-full.xml",
+  "phpsab.standard": "ruleset.xml",
+  "php-docblocker.useShortNames": true,
+  "alignment.chars": {
+    "//": {
+      "spaceBefore": 1,
+      "spaceAfter": 1
+    },
+    "#": {
+      "spaceBefore": 1,
+      "spaceAfter": 1
+    }
+  },
+  "gitlens.currentLine.enabled": false,
+  "gitlens.hovers.currentLine.over": "line",
+  "gitlens.codeLens.enabled": false,
+  "gitlens.defaultDateFormat": "YYYY/MM/DD hh:mm",
+  "gitlens.defaultDateShortFormat": null,
+  "gitlens.defaultTimeFormat": null,
+  "gitlens.statusBar.format": "${author}, ${committerDate}${' via 'pullRequest}",
+  "gitlens.advanced.messages": {
+    "suppressGitVersionWarning": true
+  },
+  "todohighlight.keywordsPattern": "TODO|FIXME",
+  "todohighlight.defaultStyle": {
+      "color": "#222",
+      "backgroundColor": "#ddd",
+  },
 
   // vim
   "vim.leader": ",",
@@ -68,6 +136,9 @@
   "vim.sneak": true,
   "vim.whichwrap": "h,l", // カーソルを行頭行末で停止させない
   "vim.useSystemClipboard": true,
+
+  // キーバインド
+  // コマンド名は ",uu" → ">command" → 歯車マーク → 対象を右クリック → "Copy Command Id" で確認可能
   "vim.normalModeKeyBindingsNonRecursive": [
     // ; を : にする
     {
@@ -105,6 +176,11 @@
       "before": ["<C-e>"],
       "after": ["$"]
     },
+    // xでレジスタを汚染しない
+//    {
+//      "before": ["x"],
+//      "after": ["\"", "_", "x"]
+//    },
     // 画面分割
     {
       "before": ["<LEADER>", "v"],
@@ -136,6 +212,23 @@
       "before": ["<C-l>"],
       "after": ["g", "t"]
     },
+    // タブ自体の位置を移動
+    {
+      "before": ["<LEFT>"],
+      "commands": ["workbench.action.moveEditorLeftInGroup"]
+    },
+    {
+      "before": ["<RIGHT>"],
+      "commands": ["workbench.action.moveEditorRightInGroup"]
+    },
+    {
+      "before": ["<C-LEFT>"],
+      "commands": ["workbench.action.moveEditorToLeftGroup"]
+    },
+    {
+      "before": ["<C-RIGHT>"],
+      "commands": ["workbench.action.moveEditorToRightGroup"]
+    },
     // タブを閉じる
     {
       "before": ["s", "d"],
@@ -154,7 +247,7 @@
     // 段落をソート
     {
       "before": ["<LEADER>", "s"],
-      "after": ["v", "i", "p", ":", "s", "o", "r", "t", "<CR>"]
+      "after": ["v", "i", "p", "h", ":", "s", "o", "r", "t", "<CR>"]
     },
     // easymotion 2文字
     {
@@ -178,20 +271,29 @@
     },
     // マルチカーソル
     {
-      "before": ["<C-k>"],
+      "before": ["<C-m>"],
       "after": ["g", "b"]
     },
     // タグジャンプ
     {
       "before": ["<ENTER>"],
       "commands": ["editor.action.revealDefinition"]
+    },
+    {
+      "before": ["<BS>"],
+      "commands": ["editor.action.goToReferences"]
     }
   ],
   "vim.visualModeKeyBindingsNonRecursive": [
     // マルチカーソル
     {
-      "before": ["<C-k>"],
+      "before": ["<C-m>"],
       "after": ["g", "b"]
+    },
+    // アラインメント
+    {
+      "before": ["<LEADER>", "a"],
+      "commands": ["alignment.alignFirst"]
     }
   ],
   "vim.insertModeKeyBindingsNonRecursive": [
@@ -199,14 +301,17 @@
     {
       "before": ["j", "j"],
       "after": ["<ESC>"]
+    },
+    // インデント
+    {
+      "before": ["<C-i>"],
+      "commands": ["editor.action.indentLines"]
     }
   ],
 
   // vim.easymotion
   "vim.easymotionMarkerBackgroundColor": "rgba(0, 0, 0, 0.5)",
-  "vim.easymotionMarkerWidthPerChar": 14,
   "vim.easymotionMarkerHeight": 24,
-  "vim.easymotionMarkerFontSize": "24",
 
   // no italic
   "editor.tokenColorCustomizations": {
@@ -320,5 +425,8 @@
         }
       }
     ]
-  }
+  },
+  "security.allowedUNCHosts": [
+    "wsl$"
+  ]
 }
