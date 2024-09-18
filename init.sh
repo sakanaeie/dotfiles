@@ -13,9 +13,5 @@ do
 done
 
 mkdir -p .vim/swap
-mkdir -p .vim/bundle
-mkdir -p .vim/ref
 
-git submodule init
-git submodule update
 git config --global alias.co checkout
