@@ -1,18 +1,10 @@
 {
-  // remote
-  "remote.SSH.configFile": "C:\\Users\\<<<<USERNAME>>>>\\.ssh\\config",
-  "remote.SSH.useLocalServer": false,
-  "remote.SSH.remotePlatform": {
-    "peace-vagrant": "linux"
-  },
-  "remote.SSH.path": "C:\\Program Files\\Git\\usr\\bin\\ssh.exe",
-
   // https://code.visualstudio.com/docs/setup/linux#_visual-studio-code-is-unable-to-watch-for-file-changes-in-this-large-workspace-error-enospc
   "files.watcherExclude": {
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
-    "**/node_modules/*/**": true,
-    "**/bower_components": true
+    "**/node_modules/**": true,
+    "**/bower_components/**": true
   },
 
   // search
@@ -25,16 +17,17 @@
   // terminal
   "terminal.integrated.copyOnSelection": true, // クリップボード共有
   "terminal.integrated.defaultLocation": "editor",
-  "editor.fontSize": 13,
-  "terminal.integrated.fontSize": 13,
+
+  // font
+  "editor.fontSize": 12.5,
   "editor.fontFamily": "Migu 1M",
-  "terminal.integrated.fontFamily": "Migu 1M",
 
   // wrap
   "editor.wordWrap": "on",
   "editor.wrappingIndent": "none",      // 折り返し行をインデントしない
   "files.trimTrailingWhitespace": true, // 行末のスペースを消す
   "[markdown]": {
+    "editor.formatOnSave": false,
     "files.trimTrailingWhitespace": false
   },
 
@@ -88,6 +81,13 @@
   // save
   "editor.codeActionsOnSave": [],
 
+  // diff
+  "diffEditor.ignoreTrimWhitespace": true,
+
+  // etc 日本語入力に不都合が発生するため無効化
+  "editor.editContext": false,
+  "editor.experimentalEditContextEnabled": false,
+
   // git
   "git.ignoreLegacyWarning": true,
   "git.openRepositoryInParentFolders": "never",
@@ -99,8 +99,6 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
 
   // extentions
-  "phpcs.standard": "phpcs-full.xml",
-  "phpsab.standard": "ruleset.xml",
   "php-docblocker.useShortNames": true,
   "alignment.chars": {
     "//": {
@@ -282,6 +280,19 @@
     {
       "before": ["<BS>"],
       "commands": ["editor.action.goToReferences"]
+    },
+    {
+      "before": ["`"],
+      "commands": ["editor.action.showHover"]
+    },
+    // copilot
+    {
+      "before": ["<LEADER>", "c", "c"],
+      "commands": ["workbench.panel.chat"]
+    },
+    {
+      "before": ["<LEADER>", "c", "i"],
+      "commands": ["inlineChat.start"]
     }
   ],
   "vim.visualModeKeyBindingsNonRecursive": [
