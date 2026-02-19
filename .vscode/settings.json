@@ -61,7 +61,7 @@
   "workbench.tree.indent": 10,
 
   // color
-//  "workbench.colorTheme": "Dark+", // default
+  "workbench.colorTheme": "Default Dark Modern",
   "workbench.colorCustomizations": {
     "editorIndentGuide.activeBackground": "#fff2", // アクティブであるインデントガイドを薄くする
     "editorIndentGuide.background":       "#0000", // アクティブでないインデントガイドを消す
