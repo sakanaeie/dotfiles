@@ -20,7 +20,7 @@
 
   // font
   "editor.fontSize": 12.5,
-  "editor.fontFamily": "'Migu 1M', monospace",
+  "editor.fontFamily": "Migu 1M",
 
   // wrap
   "editor.wordWrap": "on",
